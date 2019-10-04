@@ -9,7 +9,8 @@ import names
 import openpyxl
 
 main_win = tkinter.Tk()
-main_win.geometry("0x0")
+
+main_win.geometry("1366x768")
 main_win.finaleFile = 'undefined'
 main_win.shortcutFile = 'undefined'
 
@@ -27,8 +28,6 @@ dmxques = []
 def finale_import():
     # prereq: finalefile, shortcutfile
     # output: pyrocues array, dmxques
-
-    getcontext().prec = 2  # behövs för att tidskonverteringen för flammcuerna ska funka
 
     i = 0
     flag = 0
@@ -56,8 +55,11 @@ def finale_import():
             flag = 0        #bitches love återställda flaggor
 
 def write_dmxcues():
-    # prereq: dmxques fylld (finale_import())
-    # output: csv-fil med dmxcues formaterade för lightfactory, lägger den i samma dir som finale filen
+    #prereq: dmxques fylld (finale_import())
+    #output: csv-fil med dmxcues formaterade för lightfactory, lägger den i samma dir som finale filen
+
+    getcontext().prec = 2  # behövs för att tidskonverteringen för flammcuerna ska funka
+
     with open(re.sub('\.csv$', '', main_win.finaleFile) + 'toLightfactory.csv', 'w+', newline='') as csvfile:
         fieldnames = ['namn', 'tid', 'shortcut', '?']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -66,7 +68,7 @@ def write_dmxcues():
             tid = Decimal(q['tid'])
             tidfloor = int(tid)
 
-            frames = (tid - tidfloor) * 25
+            frames = (tid - tidfloor) * 24
             tidhms = str(datetime.timedelta(seconds=tidfloor))
             tidhms = tidhms + ":" + str(frames)
 
