@@ -5,12 +5,11 @@ import re
 import tkinter
 from tkinter import messagebox
 from tkinter import filedialog
-import names
 
 
 main_win = tkinter.Tk()
 
-main_win.geometry("1366x768")
+main_win.geometry("0x0")
 main_win.finaleFile = 'undefined'
 main_win.shortcutFile = 'undefined'
 
@@ -37,7 +36,9 @@ def finale_import():
                         if sc_row[0] == f_row[14] and sc_row[1] == f_row[21]:
                             dmxques.append({
                                 "tid": f_row[2],
-                                "shortcut": sc_row[2]
+                                "shortcut": sc_row[2],
+                                "pos": f_row[14],
+                                "effekt":  f_row[21]
                             })
                             flag = 1
                             print("Dmxque added")
@@ -64,7 +65,7 @@ def write_dmxcues():
             tidhms = str(datetime.timedelta(seconds=tidfloor))
             tidhms = tidhms + ":" + str(frames)
 
-            writer.writerow({'namn': names.get_first_name(), 'tid': tidhms, 'shortcut': q['shortcut'], '?': ''})
+            writer.writerow({'namn': q['pos'] + " " + q['effekt'], 'tid': tidhms, 'shortcut': q['shortcut'], '?': ''})
 
 finale_import()
 write_dmxcues()
