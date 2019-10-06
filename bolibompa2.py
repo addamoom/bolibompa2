@@ -101,8 +101,9 @@ def pyro_cues_to_list():
     nflag = 0  # används för att fylla i plocklistan
     mflag = 0  # används för att avgöra om en rad ska sökas efter i gffs lista
     if pyrocues:
-        pyrocues.pop(0)
 
+        print(pyrocues)
+        pyrocues.pop(0)
 
         pcs = csv.reader(pyrocues, delimiter=',')
         for row_cues in pcs:
@@ -189,12 +190,15 @@ def igniters_to_list():
             row_bulk[3].value = row_bulk[3].value - ign_1m
             price_old = row_bulk[6].value
 
+
+
     igniters_list.append('PYROT-IGN-1M' + ',' + str(price_1m) + ',' + 'Eltändare 1m, Svart' + ',' + str(ign_1m) + ','
                         + str(price_1m*ign_1m))
     igniters_list.append('PYROT-IGN-5M' + ',' + str(price_5m) + ',' + 'Eltändare 5m, Orange' + ',' + str(ign_5m) + ','
                         + str(price_5m*ign_5m))
     igniters_list.append('PYROT-IGN-GAMLA' + ',' + str(price_old) + ',' + 'Eltändare Gamla' + ',' + str(ign_old) + ','
                         + str(price_old*ign_old))
+
 
 pyro_cues_to_list()
 write_plocklistor()
