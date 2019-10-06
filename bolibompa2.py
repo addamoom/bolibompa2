@@ -120,6 +120,7 @@ def pyro_cues_to_list():
                                 if row_cues[0] == row_pe[0]:
                                     row_pe[3] = str(int(row_pe[3]) + 1)
                                     row_bulk[3].value = row_bulk[3].value - 1
+                                    row_pe[1] = row_bulk[6].value
                                     nflag = 1
                                     break
                             if not nflag:
@@ -143,8 +144,11 @@ def search_gff_lager(row):
     # om produtken finns i lista, men ej i lager
     # om produkten inte finns i lista
 
+    error_flag = 1
+
     for row_gff in ws_gff:
         if row[0] == row_gff[3].value:
+            error_flag = 0
             if row_gff[6].value > 0:
                 if row_gff[12].value is None:
                     row_gff[12].value = 1
@@ -152,14 +156,16 @@ def search_gff_lager(row):
                     row_gff[12].value = int(row_gff[12].value) + 1
             else:
                 errors.append(row)
-
+    if error_flag:
+        errors.append(row)
 
 def write_plocklistor():
     with open('bulklista.txt', 'w') as bl:
         bl.write('Art.nr, Styckpris, Pjäs, Antal, Totalpris')
         for row_i in plocka_eget:
-            bl.write('\n' + row_i[0] + ', ' + row_i[1] + ', ' +
-                     row_i[2] + ', ' + row_i[3] + ', ' + str(float(row_i[1]) * float(row_i[3])))
+            print(row_i)
+            bl.write('\n' + row_i[0] + ', \t ' + str(row_i[1]) + ', \t' +
+                     row_i[2] + ', \t' + row_i[3] + ', \t' + str(float(row_i[1]) * float(row_i[3])))
         for row_j in igniters_list:
             bl.write('\n' + row_j)
 
@@ -190,8 +196,6 @@ def igniters_to_list():
             row_bulk[3].value = row_bulk[3].value - ign_1m
             price_old = row_bulk[6].value
 
-
-
     igniters_list.append('PYROT-IGN-1M' + ',' + str(price_1m) + ',' + 'Eltändare 1m, Svart' + ',' + str(ign_1m) + ','
                         + str(price_1m*ign_1m))
     igniters_list.append('PYROT-IGN-5M' + ',' + str(price_5m) + ',' + 'Eltändare 5m, Orange' + ',' + str(ign_5m) + ','
@@ -202,3 +206,6 @@ def igniters_to_list():
 
 pyro_cues_to_list()
 write_plocklistor()
+
+
+#todo: totalpris från bulk och totalpris från gff
