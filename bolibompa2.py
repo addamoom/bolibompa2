@@ -82,7 +82,7 @@ def write_dmxcues():
             tid = Decimal(q['tid'])
             tidfloor = int(tid)
 
-            frames = (tid - tidfloor) * 25
+            frames = round((tid - tidfloor) * 25)
             tidhms = str(datetime.timedelta(seconds=tidfloor))
             tidhms = tidhms + ":" + str(frames)
 
