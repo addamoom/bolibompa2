@@ -3,10 +3,8 @@ import datetime
 from decimal import *
 import re
 import tkinter
-from tkinter import messagebox
 from tkinter import filedialog
 from tkinter import simpledialog
-import names
 import openpyxl
 
 main_win = tkinter.Tk()
@@ -15,7 +13,7 @@ main_win.finaleFile = 'undefined'
 main_win.shortcutFile = 'undefined'
 
 main_win.finaleFile = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
-main_win.shortcutFile = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj shortcut filen')
+shortcutFile = open('shortcuts.csv', 'r')
 
 wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 main_win.gfflager = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFFs lista')
@@ -42,13 +40,12 @@ def finale_import():
 
     getcontext().prec = 2  # behövs för att tidskonverteringen för flammcuerna ska funka
 
-    i = 0
     flag = 0
     with open(main_win.finaleFile, newline='', encoding='utf-8') as finalef:
         finalefile = csv.reader(finalef, delimiter=',')
         for f_row in finalefile:
             if len(f_row) > 2:  # sök inte igenom skabbiga tomma rader
-                with open(main_win.shortcutFile, newline='',
+                with open('shortcuts.csv', newline='',
                           encoding='utf-8') as shorts:  # borde testa att flytta ut denna till första open statementet, nu öppnas och stängs filen jätteofta
                     sc = csv.reader(shorts, delimiter=',')
                     for sc_row in sc:
@@ -102,8 +99,7 @@ def pyro_cues_to_list():
     mflag = 0  # används för att avgöra om en rad ska sökas efter i gffs lista
     if pyrocues:
 
-        print(pyrocues)
-        pyrocues.pop(0)
+        pyrocues.pop(0)             #tar bort raden med rubriker
 
         pcs = csv.reader(pyrocues, delimiter=',')
         for row_cues in pcs:
