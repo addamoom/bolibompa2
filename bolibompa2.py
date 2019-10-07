@@ -12,11 +12,16 @@ main_win.geometry("0x0")
 main_win.finaleFile = 'undefined'
 main_win.shortcutFile = 'undefined'
 
+# Använd denna vid utveckling
 main_win.finaleFile = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
+main_win.gfflager = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFFs lista')
+
+# Använd denna på pyttedatorn
+# main_win.finaleFile = filedialog.askopenfilename(parent=main_win, initialdir="/Users/Pyroman/Desktop", title='Välj Finale-filen')
+# main_win.gfflager = filedialog.askopenfilename(parent=main_win, initialdir="/Users/Pyroman/Desktop", title='Välj GFFs lista')
 shortcutFile = open('shortcuts.csv', 'r')
 
 wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
-main_win.gfflager = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFFs lista')
 
 wb_gff = openpyxl.load_workbook(main_win.gfflager)
 
