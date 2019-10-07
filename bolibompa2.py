@@ -17,7 +17,7 @@ main_win.shortcutFile = 'undefined'
 main_win.finaleFile = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
 main_win.shortcutFile = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj shortcut filen')
 
-wb_bulk = openpyxl.load_workbook(filename='../Bulklager.xlsx')
+wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 main_win.gfflager = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFFs lista')
 
 wb_gff = openpyxl.load_workbook(main_win.gfflager)
