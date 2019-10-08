@@ -38,9 +38,9 @@ ign_old = int(simpledialog.askstring("", "Hur många gamla tändare?",
 pyrocues = []
 dmxques = []
 
-
 sum_own = 0
 sum_gff = 0
+
 
 def finale_import():
     # prereq: finalefile, shortcutfile
@@ -98,6 +98,7 @@ finale_import()
 write_dmxcues()
 
 plocka_eget = []
+plock_gff = []
 igniters_list = []
 errors = []
 
@@ -153,7 +154,6 @@ def search_gff_lager(row):
 
     error_flag = 1
 
-
     for row_gff in ws_gff:
         if row[0] == row_gff[3].value:
             error_flag = 0
@@ -164,6 +164,8 @@ def search_gff_lager(row):
                     row_gff[12].value = int(row_gff[12].value) + 1
                 print(row_gff[9].value)
                 sum_gff = sum_gff + int(row_gff[9].value)
+                row[1] = float(row_gff[9].value)
+                plock_gff.append(row)
 
             else:
                 errors.append(row)
@@ -180,6 +182,13 @@ def write_plocklistor():
                      row_i[2] + ', \t' + row_i[3] + ', \t' + str(float(row_i[1]) * float(row_i[3])))
         for row_j in igniters_list:
             bl.write('\n' + row_j)
+
+    with open('gff.txt', 'w') as gffl:
+        gffl.write('Art.nr, Styckpris, Pjäs, Antal, Totalpris')
+        for row_o in plock_gff:
+            print(row_o)
+            gffl.write('\n' + row_o[0] + ', \t ' + str(row_o[1]) + ', \t' +
+                       row_o[2] + ', \t' + row_o[3] + ', \t' + str(float(row_o[1]) * float(row_o[3])))
 
     with open('errors.txt', 'w') as errorsfile:
         errorsfile.write('Art.nr, Styckpris, Pjäs, Antal, Totalpris')
