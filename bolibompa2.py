@@ -39,6 +39,9 @@ pyrocues = []
 dmxques = []
 
 
+sum_own = 0
+sum_gff = 0
+
 def finale_import():
     # prereq: finalefile, shortcutfile
     # output: pyrocues array, dmxques
@@ -59,7 +62,7 @@ def finale_import():
                                 "tid": f_row[2],
                                 "shortcut": sc_row[2],
                                 "pos": f_row[14],
-                                "effekt":  f_row[21]
+                                "effekt": f_row[21]
                             })
                             flag = 1
                             print("Dmxque added")
@@ -102,9 +105,11 @@ errors = []
 def pyro_cues_to_list():
     nflag = 0  # används för att fylla i plocklistan
     mflag = 0  # används för att avgöra om en rad ska sökas efter i gffs lista
+    global sum_own, sum_gff
+
     if pyrocues:
 
-        pyrocues.pop(0)             #tar bort raden med rubriker
+        pyrocues.pop(0)  # tar bort raden med rubriker
 
         pcs = csv.reader(pyrocues, delimiter=',')
         for row_cues in pcs:
@@ -122,6 +127,7 @@ def pyro_cues_to_list():
                                     row_pe[3] = str(int(row_pe[3]) + 1)
                                     row_bulk[3].value = row_bulk[3].value - 1
                                     row_pe[1] = row_bulk[6].value
+                                    sum_own = sum_own + row_pe[1]
                                     nflag = 1
                                     break
                             if not nflag:
@@ -137,15 +143,16 @@ def pyro_cues_to_list():
             mflag = 0
 
     igniters_to_list()
-    wb_bulk.save('../Bulklager.xlsx')
-    wb_gff.save('NewGFF.xlsx')
 
 
 def search_gff_lager(row):
     # om produtken finns i lista, men ej i lager
     # om produkten inte finns i lista
 
+    global sum_own, sum_gff
+
     error_flag = 1
+
 
     for row_gff in ws_gff:
         if row[0] == row_gff[3].value:
@@ -155,10 +162,14 @@ def search_gff_lager(row):
                     row_gff[12].value = 1
                 else:
                     row_gff[12].value = int(row_gff[12].value) + 1
+                print(row_gff[9].value)
+                sum_gff = sum_gff + int(row_gff[9].value)
+
             else:
                 errors.append(row)
     if error_flag:
         errors.append(row)
+
 
 def write_plocklistor():
     with open('bulklista.txt', 'w') as bl:
@@ -170,13 +181,10 @@ def write_plocklistor():
         for row_j in igniters_list:
             bl.write('\n' + row_j)
 
-
-
     with open('errors.txt', 'w') as errorsfile:
         errorsfile.write('Art.nr, Styckpris, Pjäs, Antal, Totalpris')
         for row_k in errors:
             errorsfile.write('\n' + row_k[0] + ', ' + row_k[1] + ', ' + row_k[2] + ', ' + row_i[3])
-
 
 
 def igniters_to_list():
@@ -184,29 +192,48 @@ def igniters_to_list():
     price_5m = 0
     price_old = 0
 
+    global sum_own, sum_gff
+
     for row_bulk in ws_bulk:
         if row_bulk[0].value == 'PYROT-IGN-1M':
             row_bulk[3].value = row_bulk[3].value - ign_1m
             price_1m = row_bulk[6].value
+            sum_own = sum_own + (price_1m * ign_1m)
 
         elif row_bulk[0].value == 'PYROT-IGN-5M':
-            row_bulk[3].value = row_bulk[3].value - ign_1m
+            row_bulk[3].value = row_bulk[3].value - ign_5m
             price_5m = row_bulk[6].value
+            sum_own = sum_own + (price_5m * ign_5m)
 
         elif row_bulk[0].value == 'PYROT-IGN-GAMLA':
-            row_bulk[3].value = row_bulk[3].value - ign_1m
+            row_bulk[3].value = row_bulk[3].value - ign_old
             price_old = row_bulk[6].value
+            sum_own = sum_own + (price_old * ign_old)
 
     igniters_list.append('PYROT-IGN-1M' + ',' + str(price_1m) + ',' + 'Eltändare 1m, Svart' + ',' + str(ign_1m) + ','
-                        + str(price_1m*ign_1m))
+                         + str(price_1m * ign_1m))
     igniters_list.append('PYROT-IGN-5M' + ',' + str(price_5m) + ',' + 'Eltändare 5m, Orange' + ',' + str(ign_5m) + ','
-                        + str(price_5m*ign_5m))
+                         + str(price_5m * ign_5m))
     igniters_list.append('PYROT-IGN-GAMLA' + ',' + str(price_old) + ',' + 'Eltändare Gamla' + ',' + str(ign_old) + ','
-                        + str(price_old*ign_old))
+                         + str(price_old * ign_old))
 
 
 pyro_cues_to_list()
 write_plocklistor()
 
 
-#todo: totalpris från bulk och totalpris från gff
+def exit_application():
+    msgbox = tkinter.messagebox.askquestion('Genomför köp', 'Pris från bulklager: ' + str(sum_own) + '\n'
+                                            + 'Pris från GFF: ' + str(sum_gff) + '\n'
+                                            + 'Vill du genomföra köpet?')
+    if msgbox == 'yes':
+        wb_bulk.save('../Bulklager.xlsx')
+        wb_gff.save('NewGFF.xlsx')
+        print('Finished')
+
+    else:
+        print(msgbox)
+        main_win.destroy()
+
+
+exit_application()
