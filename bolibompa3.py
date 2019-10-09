@@ -19,12 +19,23 @@ pyrocues = []
 dmxques = []
 shortcutFile = open('shortcuts.csv', 'r')
 
+
+plocka_eget = []
+plocka_gff = []
+errors = []
+
+
 wb_gff = ''
 wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 
 ws_gff = ''
 ws_bulk = wb_bulk['Bulklager']
 
+
+table = ''
+folder_bulk = ''
+folder_gff = ''
+folder_error = ''
 
 def import_finale():
     main_win.finale_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
@@ -87,9 +98,6 @@ def write_dmxcues():
             writer.writerow({'namn': q['pos'] + " " + q['effekt'], 'tid': tidhms, 'shortcut': q['shortcut'], '?': ''})
 
 
-plocka_eget = []
-plocka_gff = []
-errors = []
 
 
 def search_assortment():
@@ -152,7 +160,6 @@ def search_gff_lager(row):
         errors.append(row)
 
 
-# def display_lists():
 
 
 def kbk():
@@ -164,17 +171,31 @@ def scan_list():
     if main_win.finale_file and gff_file:
         print('Båda filerna finns')
         search_assortment()
+        if plocka_eget:
+            display_lists(folder_bulk, plocka_eget)
+        if plocka_gff:
+            display_lists(folder_gff, plocka_gff)
+        if errors:
+            display_lists(folder_error, errors)
     else:
         messagebox.showinfo("Varning!", "Du måste välja filer först")
 
+def display_lists(folder, list):
+
+    for row in list:
+        table.insert(folder, "end", text=row[0], values=[row[1], row[2]])
+
+
 
 def init(main_win):
+
+    global table, folder_bulk, folder_gff, folder_error
     info_frame = Canvas(main_win, height=700)
 
     info_scroll = Scrollbar(info_frame)
     info_scroll.pack(side=RIGHT, fill=Y)
 
-    table = Treeview(info_frame)
+    table = Treeview(info_frame)                        #gör denna global
     table["columns"] = ("one", "two", "three")
     table.column("#0", width=150, minwidth=150, stretch=NO)
     table.column("#1", width=150, minwidth=150, stretch=NO)
@@ -188,9 +209,9 @@ def init(main_win):
     folder_bulk = table.insert("", 1, text="Bulklager")
     folder_gff = table.insert("", 2, text="GFF")
     folder_error = table.insert("", 3, text="Error")
-    table.insert(folder_bulk, "end", text="Pangpang", values=("13", "Den säger pang"))              #skapa metod av detta med folder som parameter
-    table.insert(folder_gff, "end", text="Pangpong", values=("14", "Den säger inte pang"))
-    table.insert(folder_error, "end", text="Laser", values=("14", "Den suger"))
+    # table.insert(folder_bulk, "end", text="Pangpang", values=("13", "Den säger pang"))              #skapa metod av detta med folder som parameter
+    # table.insert(folder_gff, "end", text="Pangpong", values=("14", "Den säger inte pang"))
+    # table.insert(folder_error, "end", text="Laser", values=("14", "Den suger"))
     table.pack(side=TOP)  # , fill=X)
 
 
