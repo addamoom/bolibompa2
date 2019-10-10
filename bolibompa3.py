@@ -7,8 +7,10 @@ from tkinter import filedialog, messagebox, simpledialog
 import openpyxl
 from tkinter.ttk import Treeview
 
+from openpyxl import Workbook
+
 main_win = Tk()
-main_win.minsize(width=800, height=600)
+main_win.minsize(width=800, height=400)
 main_win.title("Bolibompa 3.0")
 
 main_win.finale_file = ''
@@ -19,11 +21,9 @@ pyrocues = []
 dmxques = []
 shortcutFile = open('shortcuts.csv', 'r')
 
-
 plocka_eget = []
 plocka_gff = []
 errors = []
-
 
 wb_gff = ''
 wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
@@ -31,11 +31,13 @@ wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 ws_gff = ''
 ws_bulk = wb_bulk['Bulklager']
 
-
 table = ''
 folder_bulk = ''
 folder_gff = ''
 folder_error = ''
+
+
+prisfaktor = 1
 
 def import_finale():
     main_win.finale_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
@@ -62,11 +64,12 @@ def import_finale():
                             print("Dmxque added")
                             break
             if flag == 0:
-                #           art.nr              pris            beskrivning
-                f_cell = f_row[21] + ',' + f_row[26] + ',' + f_row[10] + ',' + '1'
-                pyrocues.append(f_cell)  # skulle kunna filtrera bort onödiga saker ur den här arrayen
-                # print("pyrocue added")
-                # print(len(pyrocues))
+                if f_row[21]:
+                    #           art.nr              pris            beskrivning
+                    f_cell = f_row[21] + ',' + '0' + ',' + f_row[10] + ',' + '1' + ',' + '0'
+                    pyrocues.append(f_cell)  # skulle kunna filtrera bort onödiga saker ur den här arrayen
+                    # print("pyrocue added")
+                    # print(len(pyrocues))
             flag = 0  # bitches love återställda flaggor
     print('färdig')
 
@@ -98,8 +101,6 @@ def write_dmxcues():
             writer.writerow({'namn': q['pos'] + " " + q['effekt'], 'tid': tidhms, 'shortcut': q['shortcut'], '?': ''})
 
 
-
-
 def search_assortment():
     nflag = 0  # används för att fylla i plocklistan
     mflag = 0  # används för att avgöra om en rad ska sökas efter i gffs lista
@@ -113,15 +114,18 @@ def search_assortment():
             plocka_eget.append(row_cues)
         else:
             for row_bulk in ws_bulk:
-                if row_cues[0] == row_bulk[0].value:
+                if row_cues[0] == row_bulk[0].value:                        # är det rätt pjäs?
                     mflag = 1
-                    if row_bulk[3].value > 0:
-                        if plocka_eget:
+                    if row_bulk[3].value > 0:                               # finns den i lager?
+                        row_cues[1]=row_bulk[6].value
+                        row_cues[4]=row_cues[1]
+                        if plocka_eget:                                     # är listan tom?
                             for row_pe in plocka_eget:
-                                if row_cues[0] == row_pe[0]:
-                                    row_pe[3] = str(int(row_pe[3]) + 1)
-                                    row_bulk[3].value = row_bulk[3].value - 1
-                                    row_pe[1] = row_bulk[6].value
+                                if row_cues[0] == row_pe[0]:                 # matcha artnr
+                                    row_pe[3] = str(int(row_pe[3]) + 1)      # öka antalet
+                                    row_bulk[3].value = row_bulk[3].value - 1  # subtrahera från listan
+                                    row_pe[1] = row_bulk[6].value           # sätt pjäspris till det i listan
+                                    row_pe[4] = str(int(row_pe[4]) + int(row_pe[1]))    #öka totalpris
                                     nflag = 1
                                     break
                             if not nflag:
@@ -142,29 +146,55 @@ def search_gff_lager(row):
     # om produkten inte finns i lista
 
     error_flag = 1
+    multi_flag = 0
+    error_multi = 0
 
     for row_gff in ws_gff:
         if row[0] == row_gff[3].value:
+            row[1] = float(row_gff[9].value)
+            row[4] = row[1]
             error_flag = 0
-            if row_gff[6].value > 0:
+            if row_gff[6].value > 0:                        # finns i lager?
                 if row_gff[12].value is None:
                     row_gff[12].value = 1
                 else:
                     row_gff[12].value = int(row_gff[12].value) + 1
-                row[1] = float(row_gff[9].value)
-                plocka_gff.append(row)
 
+                for row_plocklista in plocka_gff:
+                    if row_plocklista[0] == row[0]:
+                        row_plocklista[3] = str(int(row_plocklista[3]) + 1)
+                        row_plocklista[4] = str(int(row_plocklista[4]) + int(row_plocklista[1]))
+                        multi_flag = 1
+                if not multi_flag:
+                    print(row)
+                    plocka_gff.append(row)
+                multi_flag = 0
             else:
-                errors.append(row)
+                error_flag = 1
+
     if error_flag:
-        errors.append(row)
+        if errors:
+            for row_error in errors:
+                if row_error[0] == row[0]:
+                    row_error[3] = str(int(row_error[3]) + 1)
+                    if row_error[1] == '':
+                        row_error[1] = 0
+                        row_error[4] = 0
+                    else:
+                        row_error[4] = str(int(row_error[4]) + int(row_error[1]))
+                    error_multi = 1
+            if not error_multi:
+                errors.append(row)
+        else:
+            errors.append(row)
 
 
+def kbk_pyro():
+        print_list()
+        wb_gff.save('GFF_Order.xlsx')
 
-
-def kbk():
+def kbk_flames():
     write_dmxcues()
-    print('klar')
 
 
 def scan_list():
@@ -180,40 +210,69 @@ def scan_list():
     else:
         messagebox.showinfo("Varning!", "Du måste välja filer först")
 
+
 def display_lists(folder, list):
-
     for row in list:
-        table.insert(folder, "end", text=row[0], values=[row[1], row[2]])
+        table.insert(folder, "end", text=row[0], values=[row[1], row[2], row[3], row[4]])
 
+
+def print_list():
+
+    wb1 = Workbook()
+    dest_filename = ('plocklista.xlsx')
+
+    ws1 = wb1.active
+    ws1.title = 'Pjäser'
+    ws1.column_dimensions['A'].width = 20
+    ws1.column_dimensions['B'].width = 20
+    ws1.column_dimensions['C'].width = 60
+    ws1.column_dimensions['D'].width = 20
+    ws1.column_dimensions['E'].width = 20
+
+    ws1.append(['Art.nr', 'Enhetspris', 'Beskrivning' , 'Antal', 'Totalt pris'])
+    ws1.append([''])
+    ws1.append(['Från Bulk'])
+    if plocka_eget:
+        for row in plocka_eget:
+            ws1.append(row)
+
+    ws1.append([''])
+    ws1.append(['Från GFF'])
+    if plocka_gff:
+        for row in plocka_gff:
+            ws1.append(row)
+
+    wb1.save(filename='plocklista.xlsx')
 
 
 def init(main_win):
-
     global table, folder_bulk, folder_gff, folder_error
-    info_frame = Canvas(main_win, height=700)
+    info_frame = Frame(main_win, height=700)
 
     info_scroll = Scrollbar(info_frame)
     info_scroll.pack(side=RIGHT, fill=Y)
 
-    table = Treeview(info_frame)                        #gör denna global
-    table["columns"] = ("one", "two", "three")
+    table = Treeview(info_frame)  # gör denna global
+    table["columns"] = ("one", "two", "three", "four", "five")
     table.column("#0", width=150, minwidth=150, stretch=NO)
     table.column("#1", width=150, minwidth=150, stretch=NO)
     table.column("#2", width=500, minwidth=200)
+    table.column("#3", width=150, minwidth=50, stretch=NO)
+    table.column("#4", width=150, minwidth=50, stretch=NO)
 
     table.heading("#0", text="Art. NR", anchor=W)
     table.heading("#1", text="Pris", anchor=W)
     table.heading("#2", text="Beskrivning", anchor=W)
+    table.heading("#3", text="Antal", anchor=W)
+    table.heading("#4", text="Totalpris", anchor=W)
+
 
     # Level 1
     folder_bulk = table.insert("", 1, text="Bulklager")
     folder_gff = table.insert("", 2, text="GFF")
     folder_error = table.insert("", 3, text="Error")
-    # table.insert(folder_bulk, "end", text="Pangpang", values=("13", "Den säger pang"))              #skapa metod av detta med folder som parameter
-    # table.insert(folder_gff, "end", text="Pangpong", values=("14", "Den säger inte pang"))
-    # table.insert(folder_error, "end", text="Laser", values=("14", "Den suger"))
-    table.pack(side=TOP)  # , fill=X)
 
+    table.pack(side=TOP)  # , fill=X)
 
     button_frame = Frame(main_win)
     button_frame.pack(side=BOTTOM)
@@ -227,12 +286,11 @@ def init(main_win):
     bttn_search_list = Button(button_frame, text="Analysera lista", command=scan_list)
     bttn_search_list.pack(side=LEFT)
 
-    bttn_transact = Button(button_frame, text="KÖR!", command=kbk)
+    bttn_transact = Button(button_frame, text="Pyro", command=kbk_pyro)
     bttn_transact.pack(side=RIGHT)
 
-    global create_order
-    chck_bttn_create_order = Checkbutton(button_frame, text="Skapa beställning", onvalue=1, offvalue=0)
-    chck_bttn_create_order.pack(side=RIGHT)
+    bttn_flames = Button(button_frame, text="Flammor", command=kbk_flames)
+    bttn_flames.pack(side=RIGHT)
 
     info_frame.pack(side=TOP)
 
