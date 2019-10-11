@@ -36,7 +36,10 @@ folder_bulk = ''
 folder_gff = ''
 folder_error = ''
 
+total_bulk = 0
+total_gff = 0
 
+enter_factor = ''
 prisfaktor = 1
 
 def import_finale():
@@ -107,6 +110,11 @@ def search_assortment():
 
     pyrocues.pop(0)  # ta bort rad med rubriker
 
+    global total_bulk, prisfaktor
+
+    if enter_factor.get():
+        prisfaktor = float(enter_factor.get())
+
     pcs = csv.reader(pyrocues, delimiter=',')
     for row_cues in pcs:
         if row_cues[0] == 'BB':
@@ -117,14 +125,14 @@ def search_assortment():
                 if row_cues[0] == row_bulk[0].value:                        # är det rätt pjäs?
                     mflag = 1
                     if row_bulk[3].value > 0:                               # finns den i lager?
-                        row_cues[1]=row_bulk[6].value
+                        row_cues[1]=row_bulk[6].value * prisfaktor          # multiplicera med prisfaktor
                         row_cues[4]=row_cues[1]
+                        total_bulk = total_bulk + row_cues[1]
                         if plocka_eget:                                     # är listan tom?
                             for row_pe in plocka_eget:
                                 if row_cues[0] == row_pe[0]:                 # matcha artnr
                                     row_pe[3] = str(int(row_pe[3]) + 1)      # öka antalet
                                     row_bulk[3].value = row_bulk[3].value - 1  # subtrahera från listan
-                                    row_pe[1] = row_bulk[6].value           # sätt pjäspris till det i listan
                                     row_pe[4] = str(int(row_pe[4]) + int(row_pe[1]))    #öka totalpris
                                     nflag = 1
                                     break
@@ -148,13 +156,18 @@ def search_gff_lager(row):
     error_flag = 1
     multi_flag = 0
     error_multi = 0
+    global total_gff, prisfaktor
+
+    if enter_factor.get():
+        prisfaktor = float(enter_factor.get())
 
     for row_gff in ws_gff:
         if row[0] == row_gff[3].value:
-            row[1] = float(row_gff[9].value)
+            row[1] = float(row_gff[9].value)*prisfaktor
             row[4] = row[1]
             error_flag = 0
             if row_gff[6].value > 0:                        # finns i lager?
+                total_gff = total_gff + row[1]
                 if row_gff[12].value is None:
                     row_gff[12].value = 1
                 else:
@@ -173,15 +186,12 @@ def search_gff_lager(row):
                 error_flag = 1
 
     if error_flag:
+        row[1] = ''
+        row[4] = ''
         if errors:
             for row_error in errors:
                 if row_error[0] == row[0]:
                     row_error[3] = str(int(row_error[3]) + 1)
-                    if row_error[1] == '':
-                        row_error[1] = 0
-                        row_error[4] = 0
-                    else:
-                        row_error[4] = str(int(row_error[4]) + int(row_error[1]))
                     error_multi = 1
             if not error_multi:
                 errors.append(row)
@@ -191,8 +201,7 @@ def search_gff_lager(row):
 
 def kbk_pyro():
         print_list()
-        wb_gff.save('GFF_Order.xlsx')
-
+        wb_gff.save(gff_file)
 def kbk_flames():
     write_dmxcues()
 
@@ -203,8 +212,11 @@ def scan_list():
         search_assortment()
         if plocka_eget:
             display_lists(folder_bulk, plocka_eget)
+            table.item('folder_bulk', values=['', '', '', total_bulk])
         if plocka_gff:
             display_lists(folder_gff, plocka_gff)
+            table.item('folder_gff', values=['', '', '', total_gff])
+
         if errors:
             display_lists(folder_error, errors)
     else:
@@ -246,7 +258,7 @@ def print_list():
 
 
 def init(main_win):
-    global table, folder_bulk, folder_gff, folder_error
+    global table, folder_bulk, folder_gff, folder_error, enter_factor
     info_frame = Frame(main_win, height=700)
 
     info_scroll = Scrollbar(info_frame)
@@ -268,9 +280,9 @@ def init(main_win):
 
 
     # Level 1
-    folder_bulk = table.insert("", 1, text="Bulklager")
-    folder_gff = table.insert("", 2, text="GFF")
-    folder_error = table.insert("", 3, text="Error")
+    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk])
+    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff])
+    folder_error = table.insert("", 3, 'folder_error', text="Error")
 
     table.pack(side=TOP)  # , fill=X)
 
@@ -282,6 +294,9 @@ def init(main_win):
 
     bttn_import_gff = Button(button_frame, text="Importera GFF-prislista", command=import_gff)
     bttn_import_gff.pack(side=LEFT)
+
+    enter_factor = Entry(button_frame, text='Prisfaktor: ', textvariable=prisfaktor)
+    enter_factor.pack(side=LEFT)
 
     bttn_search_list = Button(button_frame, text="Analysera lista", command=scan_list)
     bttn_search_list.pack(side=LEFT)
