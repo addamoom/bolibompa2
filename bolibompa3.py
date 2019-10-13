@@ -1,5 +1,6 @@
 import csv
 import datetime
+import os
 from decimal import *
 import re
 from tkinter import *
@@ -40,12 +41,19 @@ total_bulk = 0
 total_gff = 0
 
 enter_factor = ''
-prisfaktor = 1
+
+analyzed = 0
 
 def import_finale():
     main_win.finale_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
 
+    global plocka_eget, plocka_gff, errors
     getcontext().prec = 2  # behövs för att tidskonverteringen för flammcuerna ska funka
+    dmxques.clear()
+    pyrocues.clear()
+    plocka_eget = []
+    plocka_gff = []
+    errors = []
 
     flag = 0
     with open(main_win.finale_file, newline='', encoding='utf-8') as finalef:
@@ -110,10 +118,7 @@ def search_assortment():
 
     pyrocues.pop(0)  # ta bort rad med rubriker
 
-    global total_bulk, prisfaktor
-
-    if enter_factor.get():
-        prisfaktor = float(enter_factor.get())
+    global total_bulk
 
     pcs = csv.reader(pyrocues, delimiter=',')
     for row_cues in pcs:
@@ -122,18 +127,19 @@ def search_assortment():
             plocka_eget.append(row_cues)
         else:
             for row_bulk in ws_bulk:
-                if row_cues[0] == row_bulk[0].value:                        # är det rätt pjäs?
+                if row_cues[0] == row_bulk[0].value:  # är det rätt pjäs?
                     mflag = 1
-                    if row_bulk[3].value > 0:                               # finns den i lager?
-                        row_cues[1]=row_bulk[6].value * prisfaktor          # multiplicera med prisfaktor
-                        row_cues[4]=row_cues[1]
-                        total_bulk = total_bulk + row_cues[1]
-                        if plocka_eget:                                     # är listan tom?
+                    if row_bulk[3].value > 0:  # finns den i lager?
+                        row_cues[1] = float(row_bulk[6].value)
+                        row_cues[4] = row_cues[1]
+                        total_bulk = total_bulk + float(row_cues[1])
+                        print(row_cues[1])
+                        if plocka_eget:  # är listan tom?
                             for row_pe in plocka_eget:
-                                if row_cues[0] == row_pe[0]:                 # matcha artnr
-                                    row_pe[3] = str(int(row_pe[3]) + 1)      # öka antalet
+                                if row_cues[0] == row_pe[0]:  # matcha artnr
+                                    row_pe[3] = str(int(row_pe[3]) + 1)  # öka antalet
                                     row_bulk[3].value = row_bulk[3].value - 1  # subtrahera från listan
-                                    row_pe[4] = str(int(row_pe[4]) + int(row_pe[1]))    #öka totalpris
+                                    row_pe[4] = str(int(row_pe[4]) + int(row_pe[1]))  # öka totalpris
                                     nflag = 1
                                     break
                             if not nflag:
@@ -148,7 +154,6 @@ def search_assortment():
                 search_gff_lager(row_cues)
             mflag = 0
 
-
 def search_gff_lager(row):
     # om produtken finns i lista, men ej i lager
     # om produkten inte finns i lista
@@ -156,17 +161,14 @@ def search_gff_lager(row):
     error_flag = 1
     multi_flag = 0
     error_multi = 0
-    global total_gff, prisfaktor
-
-    if enter_factor.get():
-        prisfaktor = float(enter_factor.get())
+    global total_gff
 
     for row_gff in ws_gff:
         if row[0] == row_gff[3].value:
-            row[1] = float(row_gff[9].value)*prisfaktor
+            row[1] = float(row_gff[9].value)
             row[4] = row[1]
             error_flag = 0
-            if row_gff[6].value > 0:                        # finns i lager?
+            if row_gff[6].value > 0:  # finns i lager?
                 total_gff = total_gff + row[1]
                 if row_gff[12].value is None:
                     row_gff[12].value = 1
@@ -200,18 +202,30 @@ def search_gff_lager(row):
 
 
 def kbk_pyro():
-        print_list()
-        wb_gff.save(gff_file)
+    if analyzed:
+        varning = messagebox.askyesno("Varning", "Du kommer att skriva över filer nu, vill du fortsätta?")
+        if varning:
+            location = filedialog.askdirectory()
+            print_list(location)
+            path = os.path.join(location, 'GFF_Order.xlsx')
+            wb_gff.save(path)
+            messagebox.showinfo("Färdigt!", "Nu finns det listor. Coolt va?")
+    else:
+        messagebox.showinfo("Fel!", 'Klicka på "Visa Lista" först  , din smurf!')
+
 def kbk_flames():
-    write_dmxcues()
+    if dmxques:
+        write_dmxcues()
 
 
 def scan_list():
+    global analyzed
     if main_win.finale_file and gff_file:
         print('Båda filerna finns')
         search_assortment()
         if plocka_eget:
             display_lists(folder_bulk, plocka_eget)
+            print(total_bulk)
             table.item('folder_bulk', values=['', '', '', total_bulk])
         if plocka_gff:
             display_lists(folder_gff, plocka_gff)
@@ -219,6 +233,7 @@ def scan_list():
 
         if errors:
             display_lists(folder_error, errors)
+        analyzed = 1
     else:
         messagebox.showinfo("Varning!", "Du måste välja filer först")
 
@@ -228,10 +243,9 @@ def display_lists(folder, list):
         table.insert(folder, "end", text=row[0], values=[row[1], row[2], row[3], row[4]])
 
 
-def print_list():
-
+def print_list(location):
     wb1 = Workbook()
-    dest_filename = ('plocklista.xlsx')
+    path = os.path.join(location, 'plocklista.xlsx')
 
     ws1 = wb1.active
     ws1.title = 'Pjäser'
@@ -241,7 +255,7 @@ def print_list():
     ws1.column_dimensions['D'].width = 20
     ws1.column_dimensions['E'].width = 20
 
-    ws1.append(['Art.nr', 'Enhetspris', 'Beskrivning' , 'Antal', 'Totalt pris'])
+    ws1.append(['Art.nr', 'Enhetspris', 'Beskrivning', 'Antal', 'Totalt pris'])
     ws1.append([''])
     ws1.append(['Från Bulk'])
     if plocka_eget:
@@ -254,7 +268,36 @@ def print_list():
         for row in plocka_gff:
             ws1.append(row)
 
-    wb1.save(filename='plocklista.xlsx')
+    wb1.save(filename=path)
+
+
+def re_init():
+    global folder_bulk, folder_gff, folder_error, total_bulk, total_gff, pyrocues, dmxques, shortcutFile
+    global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed
+
+    total_gff = 0
+    total_bulk = 0
+
+    table.delete(*table.get_children())
+    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk], tags='folder')
+    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff], tags='folder')
+    folder_error = table.insert("", 3, 'folder_error', text="Error", tags='folder')
+
+    table.tag_configure('folder', font='bold')
+
+    plocka_eget = []
+    plocka_gff = []
+    errors = []
+
+    shortcutFile = open('shortcuts.csv', 'r')
+
+    wb_gff = ''
+    wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
+
+    ws_gff = ''
+    ws_bulk = wb_bulk['Bulklager']
+
+    analyzed = 0
 
 
 def init(main_win):
@@ -278,34 +321,35 @@ def init(main_win):
     table.heading("#3", text="Antal", anchor=W)
     table.heading("#4", text="Totalpris", anchor=W)
 
-
     # Level 1
-    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk])
-    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff])
-    folder_error = table.insert("", 3, 'folder_error', text="Error")
+    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk], tags='folder')
+    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff], tags='folder')
+    folder_error = table.insert("", 3, 'folder_error', text="Error", tags='folder')
+
+    table.tag_configure('folder', font='bold')
 
     table.pack(side=TOP)  # , fill=X)
 
     button_frame = Frame(main_win)
     button_frame.pack(side=BOTTOM)
 
-    bttn_import_finale = Button(button_frame, text="Importera Finale-fil", command=import_finale)
+    bttn_import_finale = Button(button_frame, text="Importera Finale-csv", command=import_finale)
     bttn_import_finale.pack(side=LEFT)
 
     bttn_import_gff = Button(button_frame, text="Importera GFF-prislista", command=import_gff)
     bttn_import_gff.pack(side=LEFT)
 
-    enter_factor = Entry(button_frame, text='Prisfaktor: ', textvariable=prisfaktor)
-    enter_factor.pack(side=LEFT)
-
-    bttn_search_list = Button(button_frame, text="Analysera lista", command=scan_list)
+    bttn_search_list = Button(button_frame, text="Visa pjäser", command=scan_list)
     bttn_search_list.pack(side=LEFT)
 
-    bttn_transact = Button(button_frame, text="Pyro", command=kbk_pyro)
+    bttn_transact = Button(button_frame, text="Skapa plocklista", command=kbk_pyro)
     bttn_transact.pack(side=RIGHT)
 
-    bttn_flames = Button(button_frame, text="Flammor", command=kbk_flames)
+    bttn_flames = Button(button_frame, text="Skapa flammlista", command=kbk_flames)
     bttn_flames.pack(side=RIGHT)
+
+    bttn_clear = Button(button_frame, text="Rensa", command=re_init)
+    bttn_clear.pack(side=RIGHT)
 
     info_frame.pack(side=TOP)
 
