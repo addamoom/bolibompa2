@@ -7,12 +7,12 @@ from tkinter import *
 from tkinter import filedialog, messagebox, simpledialog
 import openpyxl
 from tkinter.ttk import Treeview
-
+import ntpath
 from openpyxl import Workbook
 
 main_win = Tk()
-main_win.minsize(width=800, height=400)
-main_win.title("Bolibompa 3.0")
+main_win.minsize(width=800, height=300)
+main_win.title("Bolibompa3")
 
 main_win.finale_file = ''
 gff_file = ''
@@ -43,6 +43,7 @@ total_gff = 0
 enter_factor = ''
 
 analyzed = 0
+
 
 def import_finale():
     main_win.finale_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
@@ -94,10 +95,12 @@ def import_gff():
     ws_gff = wb_gff['Wholesale - Product list - Exte']
 
 
-def write_dmxcues():
+def write_dmxcues(filepath):
     # prereq: dmxques fylld (finale_import())
     # output: csv-fil med dmxcues formaterade för lightfactory, lägger den i samma dir som finale filen
-    with open(re.sub('\.csv$', '', main_win.finale_file) + 'toLightfactory.csv', 'w+', newline='') as csvfile:
+    fname = os.path.join(filepath, get_file_name(str(main_win.finale_file)))
+
+    with open(re.sub('\.csv$', '', fname) + 'toLightfactory.csv', 'w+', newline='') as csvfile:
         fieldnames = ['namn', 'tid', 'shortcut', '?']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -110,6 +113,11 @@ def write_dmxcues():
             tidhms = tidhms + ":" + str(frames)
 
             writer.writerow({'namn': q['pos'] + " " + q['effekt'], 'tid': tidhms, 'shortcut': q['shortcut'], '?': ''})
+
+
+def get_file_name(path):
+    head, tail = ntpath.split(path)
+    return tail
 
 
 def search_assortment():
@@ -153,6 +161,7 @@ def search_assortment():
             if not mflag:
                 search_gff_lager(row_cues)
             mflag = 0
+
 
 def search_gff_lager(row):
     # om produtken finns i lista, men ej i lager
@@ -213,11 +222,12 @@ def kbk_pyro():
     else:
         messagebox.showinfo("Fel!", 'Klicka på "Visa Lista" först  , din smurf!')
 
+
 def kbk_flames():
     if dmxques:
-        write_dmxcues()
+        path = filedialog.askdirectory()
+        write_dmxcues(path)
         messagebox.showinfo("Spännande!", "Flammfilen finns nu ")
-
 
 
 def scan_list():
@@ -336,6 +346,7 @@ def init(main_win):
 
     button_frame = Frame(main_win)
     button_frame.pack(side=BOTTOM)
+
 
     bttn_import_finale = Button(button_frame, text="Importera Finale-csv", command=import_finale)
     bttn_import_finale.pack(side=LEFT)
