@@ -273,7 +273,7 @@ def print_list(location):
 
 def re_init():
     global folder_bulk, folder_gff, folder_error, total_bulk, total_gff, pyrocues, dmxques, shortcutFile
-    global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed
+    global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk
 
     total_gff = 0
     total_bulk = 0
