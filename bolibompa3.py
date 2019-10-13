@@ -216,6 +216,8 @@ def kbk_pyro():
 def kbk_flames():
     if dmxques:
         write_dmxcues()
+        messagebox.showinfo("Spännande!", "Flammfilen finns nu ")
+
 
 
 def scan_list():
@@ -298,6 +300,8 @@ def re_init():
     ws_bulk = wb_bulk['Bulklager']
 
     analyzed = 0
+
+    messagebox.showinfo("Klar!", "Din session är nu rensad. Var god välj nya filer")
 
 
 def init(main_win):
