@@ -4,15 +4,21 @@ import os
 from decimal import *
 import re
 from tkinter import *
-from tkinter import filedialog, messagebox, simpledialog
+from tkinter import filedialog, messagebox, simpledialog, ttk
 import openpyxl
 from tkinter.ttk import Treeview
+from tkinter.ttk import *
 import ntpath
 from openpyxl import Workbook
+from ttkthemes import ThemedTk
 
-main_win = Tk()
+
+main_win = ThemedTk(theme="black")  # Tk()
 main_win.minsize(width=800, height=300)
 main_win.title("Bolibompa3")
+
+# main_win.style = Style()
+# main_win.style.theme_use('step')
 
 main_win.finale_file = ''
 gff_file = ''
@@ -58,7 +64,7 @@ def import_finale():
 
     flag = 0
     with open(main_win.finale_file, newline='', encoding='utf-8') as finalef:
-        finale_file = csv.reader(finalef, delimiter=',')
+        finale_file = csv.reader(finalef,  delimiter='\t')
         for f_row in finale_file:
             if len(f_row) > 2:  # sök inte igenom skabbiga tomma rader
                 with open('shortcuts.csv', newline='',
@@ -78,7 +84,7 @@ def import_finale():
             if flag == 0:
                 if f_row[21]:
                     #           art.nr              pris            beskrivning
-                    f_cell = f_row[21] + ',' + '0' + ',' + f_row[10] + ',' + '1' + ',' + '0'
+                    f_cell = f_row[21] + '\t' + '0' + '\t' + f_row[10] + '\t' + '1' + '\t' + '0'
                     pyrocues.append(f_cell)  # skulle kunna filtrera bort onödiga saker ur den här arrayen
                     # print("pyrocue added")
                     # print(len(pyrocues))
@@ -128,7 +134,7 @@ def search_assortment():
 
     global total_bulk
 
-    pcs = csv.reader(pyrocues, delimiter=',')
+    pcs = csv.reader(pyrocues, delimiter='\t')
     for row_cues in pcs:
         if row_cues[0] == 'BB':
             row_cues[1] = '0'
@@ -316,10 +322,10 @@ def re_init():
 
 def init(main_win):
     global table, folder_bulk, folder_gff, folder_error, enter_factor
-    info_frame = Frame(main_win, height=700)
+    info_frame = Frame(main_win)
 
-    info_scroll = Scrollbar(info_frame)
-    info_scroll.pack(side=RIGHT, fill=Y)
+#  info_scroll = Scrollbar(info_frame)
+#  info_scroll.pack(side=RIGHT)
 
     table = Treeview(info_frame)  # gör denna global
     table["columns"] = ("one", "two", "three", "four", "five")
@@ -366,7 +372,7 @@ def init(main_win):
     bttn_clear = Button(button_frame, text="Rensa", command=re_init)
     bttn_clear.pack(side=RIGHT)
 
-    info_frame.pack(side=TOP)
+    info_frame.pack(side=TOP, fill=Y)
 
 
 init(main_win)
