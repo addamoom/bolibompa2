@@ -1,0 +1,191 @@
+FIRING_HEADER_ROW	Time Cue Number	Ignition Event Time	Number Of Devices	Duration	Coordinates	Chain Identifier	Lockout Identifier	Device Delay	Prefire Delay	Effect Name	Caliber	Category	Angles	Position Name	Animation Description	Module Description	Module Address	Slat Address	Pin Address	Firing Notes	Product ID	Manufacturer Product ID	Animation ID	Location Primary	Location Secondary	Price Per Device	Mortar Caliber	Track Identifier
+FIRING_DATA_ROW		16.191	1	19.77	-7.5 0.0 -12.0			0.0	0.3	Fountain Gold 4m 20s	3"	Other		P-13	Fountain Gold	pyrodigital_fm_30fps	$0A		$1		51B03008					119.0		
+FIRING_DATA_ROW		16.191	1	19.77	-5.0 0.0 -12.0			0.0	0.3	Fountain Gold 4m 20s	3"	Other		P-14	Fountain Gold	pyrodigital_fm_30fps	$0B		$0		51B03008					119.0		
+FIRING_DATA_ROW		16.191	1	19.77	-2.5 0.0 -12.0			0.0	0.3	Fountain Gold 4m 20s	3"	Other		P-15	Fountain Gold	pyrodigital_fm_30fps	$0C		$0		51B03008					119.0		
+FIRING_DATA_ROW		16.191	1	19.77	0.0 0.0 -12.0			0.0	0.3	Fountain Gold 4m 20s	3"	Other		P-16	Fountain Gold	pyrodigital_fm_30fps	$0D		$0		51B03008					119.0		
+FIRING_DATA_ROW		16.191	1	19.77	2.5 0.0 -12.0			0.0	0.3	Fountain Gold 4m 20s	3"	Other		P-17	Fountain Gold	pyrodigital_fm_30fps	$0E		$0		51B03008					119.0		
+FIRING_DATA_ROW		16.191	1	19.77	5.0 0.0 -12.0			0.0	0.3	Fountain Gold 4m 20s	3"	Other		P-18	Fountain Gold	pyrodigital_fm_30fps	$0F		$0		51B03008					119.0		
+FIRING_DATA_ROW		16.191	1	19.77	7.5 0.0 -12.0			0.0	0.3	Fountain Gold 4m 20s	3"	Other		P-19	Fountain Gold	pyrodigital_fm_30fps	$10		$1		51B03008					119.0		
+FIRING_DATA_ROW		16.391	1	2.11	-10.0 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-02	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$01		$7		200221					175.0		
+FIRING_DATA_ROW		16.599	1	2.11	-7.5 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-03	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$02		$5		200221					175.0		
+FIRING_DATA_ROW		16.699	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		17.001	1	2.11	-5.0 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-04	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$03		$6		200221					175.0		
+FIRING_DATA_ROW		17.479	1	2.11	-2.5 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-05	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$04		$5		200221					175.0		
+FIRING_DATA_ROW		17.958	1	2.11	0.0 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-06	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$05		$9		200221					175.0		
+FIRING_DATA_ROW		18.182	1	2.11	2.5 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-07	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$06		$5		200221					175.0		
+FIRING_DATA_ROW		18.614	1	2.11	5.0 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-08	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$07		$6		200221					175.0		
+FIRING_DATA_ROW		19.1	1	2.11	7.5 0.0 -4.0			0.0	0.1	45 mm Comet Fuchsia w/ Tail	50mm	Candles		P-09	2.11s Comet Fuchsia w/ Tail	pyrodigital_fm_30fps	$08		$5		200221					175.0		
+FIRING_DATA_ROW		20.081	1	2.11	10.0 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-10	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$09		$7		YT20011					170.0		
+FIRING_DATA_ROW		20.257	1	2.11	7.5 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-09	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$08		$6		YT20011					170.0		
+FIRING_DATA_ROW		20.609	1	2.11	5.0 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-08	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$07		$7		YT20011					170.0		
+FIRING_DATA_ROW		20.709	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		21.009	1	2.11	2.5 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-07	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$06		$6		YT20011					170.0		
+FIRING_DATA_ROW		21.441	1	2.11	0.0 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-06	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$05		$A		YT20011					170.0		
+FIRING_DATA_ROW		21.655	1	2.11	-2.5 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-05	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$04		$6		YT20011					170.0		
+FIRING_DATA_ROW		22.145	1	2.11	-5.0 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-04	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$03		$7		YT20011					170.0		
+FIRING_DATA_ROW		22.642	1	2.11	-7.5 0.0 -4.0			0.0	0.1	45 mm Comet Orange Wave	50mm	Candles		P-03	2.11s Comet Orange Wave	pyrodigital_fm_30fps	$02		$6		YT20011					170.0		
+FIRING_DATA_ROW		23.495	1	0.91	0.0 0.0 -4.0			0.0	0.2	13-Fan Z Rainbow ( sequential )	30mm	Cakes		P-06	0.91s 13Shots (A) Red Mine  + (C) Blue Mine  + (D) Yellow Mine  + (E) Green Mine  + (F) Purple Mine  + (G) Orange Mine   CAKE , Z-shape , 1 Rows ROW 1 (AACCDDDEEFFGG)	pyrodigital_fm_30fps	$05		$0		33B03022					450.0		
+FIRING_DATA_ROW		23.595	1	60.0	-10.0 0.0 -4.0			0.0	0.1	Bengal Blue to Red 60 sec	3"	Other		P-02	Ground Flare Blue To Red	pyrodigital_fm_30fps	$01		$1		ZX8025BR					100.0		
+FIRING_DATA_ROW		23.595	1	60.0	10.0 0.0 -4.0			0.0	0.1	Bengal Blue to Red 60 sec	3"	Other		P-10	Ground Flare Blue To Red	pyrodigital_fm_30fps	$09		$1		ZX8025BR					100.0		
+FIRING_DATA_ROW		23.595	1	60.0	-7.5 0.0 -12.0			0.0	0.1	Bengal Blue to Red 60 sec	3"	Other		P-13	Ground Flare Blue To Red	pyrodigital_fm_30fps	$0A		$0		ZX8025BR					100.0		
+FIRING_DATA_ROW		23.595	1	60.0	7.5 0.0 -12.0			0.0	0.1	Bengal Blue to Red 60 sec	3"	Other		P-19	Ground Flare Blue To Red	pyrodigital_fm_30fps	$10		$0		ZX8025BR					100.0		
+FIRING_DATA_ROW		27.046	1	0.91	0.0 0.0 -4.0			0.0	0.2	13-Fan Z Rainbow ( sequential )	30mm	Cakes		P-06	0.91s 13Shots (A) Red Mine  + (C) Blue Mine  + (D) Yellow Mine  + (E) Green Mine  + (F) Purple Mine  + (G) Orange Mine   CAKE , Z-shape , 1 Rows ROW 1 (AACCDDDEEFFGG)	pyrodigital_fm_30fps	$05		$1		33B03022					450.0		
+FIRING_DATA_ROW		30.866	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		30.866	0	2.6	-4.0 0.0 -8.0			0.0	0.0	Explo Macro Wave 75° to -75° SLOW	3"	Other		EMEF	31 Shot Cake (a) R75 .0838 DUR Flame + (b) R70 .0838 DUR Flame + (c) R65 .0838 DUR Flame + (d) R60 .0838 DUR Flame + (e) R55 .0838 DUR Flame + (f) R50 .0838 DUR Flame + (g) R45 .0838 DUR Flame + (h) R40 .0838 DUR Flame + (i) R35 .0838 DUR Flame + (j) R30 .0838 DUR Flame + (k) R25 .0838 DUR Flame + (l) R20 .0838 DUR Flame + (n) R15 .0838 DUR Flame + (o) R10 .0838 DUR Flame + (p) R5 .0838 DUR Flame + (q) .0838 DUR Flame + (r) L5 .0838 DUR Flame + (s) L10 .0838 DUR Flame + (t) L15 .0838 DUR Flame + (u) L20 .0838 DUR Flame + (v) L25 .0838 DUR Flame + (w) L30 .0838 DUR Flame + (x) L35 .0838 DUR Flame + (y) L40 .0838 DUR Flame + (z) L45 .0838 DUR Flame + (1) L50 .0838 DUR Flame + (2) L55 .0838 DUR Flame + (3) L60 .0838 DUR Flame + (4) L65 .0838 DUR Flame + (5) L70 .0838 DUR Flame + (6) L75 .0838 DUR Flame 1 Row (abcdefghijklnopqrstuvwxyz123456)	firetek_dmx_device_11col	01		dmx		S75I	GFX9037				0.08		
+FIRING_DATA_ROW		30.866	0	2.6	4.0 0.0 -8.0			0.0	0.0	Explo Macro Wave -75° to 75° SLOW	3"	Other		WMWF	31 Shot Cake (a) L75 .0838 DUR Flame + (b) L70 .0838 DUR Flame + (c) L65 .0838 DUR Flame + (d) L60 .0838 DUR Flame + (e) L55 .0838 DUR Flame + (f) L50 .0838 DUR Flame + (g) L45 .0838 DUR Flame + (h) L40 .0838 DUR Flame + (i) L35 .0838 DUR Flame + (j) L30 .0838 DUR Flame + (k) L25 .0838 DUR Flame + (l) L20 .0838 DUR Flame + (n) L15 .0838 DUR Flame + (o) L10 .0838 DUR Flame + (p) L5 .0838 DUR Flame + (q) .0838 DUR Flame + (r) R5 .0838 DUR Flame + (s) R10 .0838 DUR Flame + (t) R15 .0838 DUR Flame + (u) R20 .0838 DUR Flame + (v) R25 .0838 DUR Flame + (w) R30 .0838 DUR Flame + (x) R35 .0838 DUR Flame + (y) R40 .0838 DUR Flame + (z) R45 .0838 DUR Flame + (1) R50 .0838 DUR Flame + (2) R55 .0838 DUR Flame + (3) R60 .0838 DUR Flame + (4) R65 .0838 DUR Flame + (5) R70 .0838 DUR Flame + (6) R75 .0838 DUR Flame 1 Row (abcdefghijklnopqrstuvwxyz123456)	firetek_dmx_device_11col	11		dmx		S75	GFX9037				0.08		
+FIRING_DATA_ROW		30.866	1	0.1	-10.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-01	flame projector	firetek_dmx_device_11col	02		dmx		K							
+FIRING_DATA_ROW		31.058	1	0.1	-7.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-02	flame projector	firetek_dmx_device_11col	03		dmx		K							
+FIRING_DATA_ROW		31.522	1	0.1	-5.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-03	flame projector	firetek_dmx_device_11col	04		dmx		K							
+FIRING_DATA_ROW		31.938	1	0.1	-2.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-04	flame projector	firetek_dmx_device_11col	05		dmx		K							
+FIRING_DATA_ROW		32.386	1	0.1	0.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-05	flame projector	firetek_dmx_device_11col	06		dmx		K							
+FIRING_DATA_ROW		32.621	1	0.1	2.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-06	flame projector	firetek_dmx_device_11col	07		dmx		K							
+FIRING_DATA_ROW		33.058	1	0.1	5.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-07	flame projector	firetek_dmx_device_11col	08		dmx		K							
+FIRING_DATA_ROW		33.538	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		33.538	1	0.1	7.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-08	flame projector	firetek_dmx_device_11col	09		dmx		K							
+FIRING_DATA_ROW		34.427	0	2.6	4.0 0.0 -8.0			0.0	0.0	Explo Macro Wave 75° to -75° SLOW	3"	Other		WMWF	31 Shot Cake (a) R75 .0838 DUR Flame + (b) R70 .0838 DUR Flame + (c) R65 .0838 DUR Flame + (d) R60 .0838 DUR Flame + (e) R55 .0838 DUR Flame + (f) R50 .0838 DUR Flame + (g) R45 .0838 DUR Flame + (h) R40 .0838 DUR Flame + (i) R35 .0838 DUR Flame + (j) R30 .0838 DUR Flame + (k) R25 .0838 DUR Flame + (l) R20 .0838 DUR Flame + (n) R15 .0838 DUR Flame + (o) R10 .0838 DUR Flame + (p) R5 .0838 DUR Flame + (q) .0838 DUR Flame + (r) L5 .0838 DUR Flame + (s) L10 .0838 DUR Flame + (t) L15 .0838 DUR Flame + (u) L20 .0838 DUR Flame + (v) L25 .0838 DUR Flame + (w) L30 .0838 DUR Flame + (x) L35 .0838 DUR Flame + (y) L40 .0838 DUR Flame + (z) L45 .0838 DUR Flame + (1) L50 .0838 DUR Flame + (2) L55 .0838 DUR Flame + (3) L60 .0838 DUR Flame + (4) L65 .0838 DUR Flame + (5) L70 .0838 DUR Flame + (6) L75 .0838 DUR Flame 1 Row (abcdefghijklnopqrstuvwxyz123456)	firetek_dmx_device_11col	11		dmx		S75I	GFX9037				0.08		
+FIRING_DATA_ROW		34.427	0	2.6	-4.0 0.0 -8.0			0.0	0.0	Explo Macro Wave -75° to 75° SLOW	3"	Other		EMEF	31 Shot Cake (a) L75 .0838 DUR Flame + (b) L70 .0838 DUR Flame + (c) L65 .0838 DUR Flame + (d) L60 .0838 DUR Flame + (e) L55 .0838 DUR Flame + (f) L50 .0838 DUR Flame + (g) L45 .0838 DUR Flame + (h) L40 .0838 DUR Flame + (i) L35 .0838 DUR Flame + (j) L30 .0838 DUR Flame + (k) L25 .0838 DUR Flame + (l) L20 .0838 DUR Flame + (n) L15 .0838 DUR Flame + (o) L10 .0838 DUR Flame + (p) L5 .0838 DUR Flame + (q) .0838 DUR Flame + (r) R5 .0838 DUR Flame + (s) R10 .0838 DUR Flame + (t) R15 .0838 DUR Flame + (u) R20 .0838 DUR Flame + (v) R25 .0838 DUR Flame + (w) R30 .0838 DUR Flame + (x) R35 .0838 DUR Flame + (y) R40 .0838 DUR Flame + (z) R45 .0838 DUR Flame + (1) R50 .0838 DUR Flame + (2) R55 .0838 DUR Flame + (3) R60 .0838 DUR Flame + (4) R65 .0838 DUR Flame + (5) R70 .0838 DUR Flame + (6) R75 .0838 DUR Flame 1 Row (abcdefghijklnopqrstuvwxyz123456)	firetek_dmx_device_11col	01		dmx		S75	GFX9037				0.08		
+FIRING_DATA_ROW		34.427	1	0.1	10.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-09	flame projector	firetek_dmx_device_11col	10		dmx		K							
+FIRING_DATA_ROW		34.618	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		34.618	1	0.1	7.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-08	flame projector	firetek_dmx_device_11col	09		dmx		K							
+FIRING_DATA_ROW		34.934	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		34.934	1	0.1	5.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-07	flame projector	firetek_dmx_device_11col	08		dmx		K							
+FIRING_DATA_ROW		35.378	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		35.378	1	0.1	2.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-06	flame projector	firetek_dmx_device_11col	07		dmx		K							
+FIRING_DATA_ROW		35.886	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		35.886	1	0.1	0.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-05	flame projector	firetek_dmx_device_11col	06		dmx		K							
+FIRING_DATA_ROW		36.127	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		36.127	1	0.1	-2.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-04	flame projector	firetek_dmx_device_11col	05		dmx		K							
+FIRING_DATA_ROW		36.606	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		36.606	1	0.1	-5.0 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-03	flame projector	firetek_dmx_device_11col	04		dmx		K							
+FIRING_DATA_ROW		37.009	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		37.009	1	0.1	-7.5 0.0 1.0			0.0	0.0	Gasol K	3"	Other		G-02	flame projector	firetek_dmx_device_11col	03		dmx		K							
+FIRING_DATA_ROW		37.989	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		37.989	1	0.6	0.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-05	flame projector	firetek_dmx_device_11col	06		dmx		M							
+FIRING_DATA_ROW		38.838	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		38.838	1	0.6	-2.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-04	flame projector	firetek_dmx_device_11col	05		dmx		M							
+FIRING_DATA_ROW		38.838	1	0.6	2.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-06	flame projector	firetek_dmx_device_11col	07		dmx		M							
+FIRING_DATA_ROW		39.832	1	0.6	-5.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-03	flame projector	firetek_dmx_device_11col	04		dmx		M							
+FIRING_DATA_ROW		39.832	1	0.6	5.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-07	flame projector	firetek_dmx_device_11col	08		dmx		M							
+FIRING_DATA_ROW		40.228	1	0.6	-7.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-02	flame projector	firetek_dmx_device_11col	03		dmx		M							
+FIRING_DATA_ROW		40.228	1	0.6	7.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-08	flame projector	firetek_dmx_device_11col	09		dmx		M							
+FIRING_DATA_ROW		40.711	1	0.6	-10.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-01	flame projector	firetek_dmx_device_11col	02		dmx		M							
+FIRING_DATA_ROW		40.711	1	0.6	10.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-09	flame projector	firetek_dmx_device_11col	10		dmx		M							
+FIRING_DATA_ROW		41.576	1	0.6	-10.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-01	flame projector	firetek_dmx_device_11col	02		dmx		M							
+FIRING_DATA_ROW		41.576	1	0.6	10.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-09	flame projector	firetek_dmx_device_11col	10		dmx		M							
+FIRING_DATA_ROW		42.468	1	0.6	-7.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-02	flame projector	firetek_dmx_device_11col	03		dmx		M							
+FIRING_DATA_ROW		42.468	1	0.6	7.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-08	flame projector	firetek_dmx_device_11col	09		dmx		M							
+FIRING_DATA_ROW		43.416	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		43.416	1	0.6	-5.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-03	flame projector	firetek_dmx_device_11col	04		dmx		M							
+FIRING_DATA_ROW		43.416	1	0.6	5.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-07	flame projector	firetek_dmx_device_11col	08		dmx		M							
+FIRING_DATA_ROW		43.812	1	0.6	-2.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-04	flame projector	firetek_dmx_device_11col	05		dmx		M							
+FIRING_DATA_ROW		43.812	1	0.6	2.5 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-06	flame projector	firetek_dmx_device_11col	07		dmx		M							
+FIRING_DATA_ROW		44.236	1	0.6	0.0 0.0 1.0			0.0	0.0	Gasol M	3"	Other		G-05	flame projector	firetek_dmx_device_11col	06		dmx		M							
+FIRING_DATA_ROW		44.841	1	1.0	-7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-03	Silver Jet	pyrodigital_fm_30fps	$02		$7		NSSF801					75.0		
+FIRING_DATA_ROW		44.841	1	1.0	-2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-05	Silver Jet	pyrodigital_fm_30fps	$04		$7		NSSF801					75.0		
+FIRING_DATA_ROW		44.841	1	1.0	2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-07	Silver Jet	pyrodigital_fm_30fps	$06		$7		NSSF801					75.0		
+FIRING_DATA_ROW		44.841	1	1.0	7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-09	Silver Jet	pyrodigital_fm_30fps	$08		$7		NSSF801					75.0		
+FIRING_DATA_ROW		45.51	1	1.0	-7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-03	Silver Jet	pyrodigital_fm_30fps	$02		$3		NSSF801					75.0		
+FIRING_DATA_ROW		45.51	1	1.0	-2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-05	Silver Jet	pyrodigital_fm_30fps	$04		$3		NSSF801					75.0		
+FIRING_DATA_ROW		45.51	1	1.0	2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-07	Silver Jet	pyrodigital_fm_30fps	$06		$3		NSSF801					75.0		
+FIRING_DATA_ROW		45.51	1	1.0	7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-09	Silver Jet	pyrodigital_fm_30fps	$08		$3		NSSF801					75.0		
+FIRING_DATA_ROW		46.068	1	1.0	-7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-03	Silver Jet	pyrodigital_fm_30fps	$02		$1		NSSF801					75.0		
+FIRING_DATA_ROW		46.068	1	1.0	-2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-05	Silver Jet	pyrodigital_fm_30fps	$04		$1		NSSF801					75.0		
+FIRING_DATA_ROW		46.068	1	1.0	2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-07	Silver Jet	pyrodigital_fm_30fps	$06		$1		NSSF801					75.0		
+FIRING_DATA_ROW		46.068	1	1.0	7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-09	Silver Jet	pyrodigital_fm_30fps	$08		$1		NSSF801					75.0		
+FIRING_DATA_ROW		48.441	1	1.0	-7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-03	Silver Jet	pyrodigital_fm_30fps	$02		$2		NSSF801					75.0		
+FIRING_DATA_ROW		48.441	1	1.0	-2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-05	Silver Jet	pyrodigital_fm_30fps	$04		$2		NSSF801					75.0		
+FIRING_DATA_ROW		48.441	1	1.0	2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-07	Silver Jet	pyrodigital_fm_30fps	$06		$2		NSSF801					75.0		
+FIRING_DATA_ROW		48.441	1	1.0	7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-09	Silver Jet	pyrodigital_fm_30fps	$08		$2		NSSF801					75.0		
+FIRING_DATA_ROW		49.027	1	1.0	-7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-03	Silver Jet	pyrodigital_fm_30fps	$02		$4		NSSF801					75.0		
+FIRING_DATA_ROW		49.027	1	1.0	-2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-05	Silver Jet	pyrodigital_fm_30fps	$04		$4		NSSF801					75.0		
+FIRING_DATA_ROW		49.027	1	1.0	2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-07	Silver Jet	pyrodigital_fm_30fps	$06		$4		NSSF801					75.0		
+FIRING_DATA_ROW		49.027	1	1.0	7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-09	Silver Jet	pyrodigital_fm_30fps	$08		$4		NSSF801					75.0		
+FIRING_DATA_ROW		49.731	1	1.0	-7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-03	Silver Jet	pyrodigital_fm_30fps	$02		$8		NSSF801					75.0		
+FIRING_DATA_ROW		49.731	1	1.0	-2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-05	Silver Jet	pyrodigital_fm_30fps	$04		$8		NSSF801					75.0		
+FIRING_DATA_ROW		49.731	1	1.0	2.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-07	Silver Jet	pyrodigital_fm_30fps	$06		$8		NSSF801					75.0		
+FIRING_DATA_ROW		49.731	1	1.0	7.5 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-09	Silver Jet	pyrodigital_fm_30fps	$08		$8		NSSF801					75.0		
+FIRING_DATA_ROW		52.05	1	1.0	-10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-02	Silver Jet	pyrodigital_fm_30fps	$01		$A		NSSF801					75.0		
+FIRING_DATA_ROW		52.05	1	1.0	-5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-04	Silver Jet	pyrodigital_fm_30fps	$03		$A		NSSF801					75.0		
+FIRING_DATA_ROW		52.05	1	1.0	0.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-06	Silver Jet	pyrodigital_fm_30fps	$05		$D		NSSF801					75.0		
+FIRING_DATA_ROW		52.05	1	1.0	5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-08	Silver Jet	pyrodigital_fm_30fps	$07		$A		NSSF801					75.0		
+FIRING_DATA_ROW		52.05	1	1.0	10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-10	Silver Jet	pyrodigital_fm_30fps	$09		$A		NSSF801					75.0		
+FIRING_DATA_ROW		52.648	1	1.0	-10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-02	Silver Jet	pyrodigital_fm_30fps	$01		$5		NSSF801					75.0		
+FIRING_DATA_ROW		52.648	1	1.0	-5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-04	Silver Jet	pyrodigital_fm_30fps	$03		$4		NSSF801					75.0		
+FIRING_DATA_ROW		52.648	1	1.0	0.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-06	Silver Jet	pyrodigital_fm_30fps	$05		$7		NSSF801					75.0		
+FIRING_DATA_ROW		52.648	1	1.0	5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-08	Silver Jet	pyrodigital_fm_30fps	$07		$4		NSSF801					75.0		
+FIRING_DATA_ROW		52.648	1	1.0	10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-10	Silver Jet	pyrodigital_fm_30fps	$09		$5		NSSF801					75.0		
+FIRING_DATA_ROW		53.355	1	1.0	-10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-02	Silver Jet	pyrodigital_fm_30fps	$01		$3		NSSF801					75.0		
+FIRING_DATA_ROW		53.355	1	1.0	-5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-04	Silver Jet	pyrodigital_fm_30fps	$03		$2		NSSF801					75.0		
+FIRING_DATA_ROW		53.355	1	1.0	0.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-06	Silver Jet	pyrodigital_fm_30fps	$05		$5		NSSF801					75.0		
+FIRING_DATA_ROW		53.355	1	1.0	5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-08	Silver Jet	pyrodigital_fm_30fps	$07		$2		NSSF801					75.0		
+FIRING_DATA_ROW		53.355	1	1.0	10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-10	Silver Jet	pyrodigital_fm_30fps	$09		$3		NSSF801					75.0		
+FIRING_DATA_ROW		55.586	1	1.0	-10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-02	Silver Jet	pyrodigital_fm_30fps	$01		$4		NSSF801					75.0		
+FIRING_DATA_ROW		55.586	1	1.0	-5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-04	Silver Jet	pyrodigital_fm_30fps	$03		$3		NSSF801					75.0		
+FIRING_DATA_ROW		55.586	1	1.0	0.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-06	Silver Jet	pyrodigital_fm_30fps	$05		$6		NSSF801					75.0		
+FIRING_DATA_ROW		55.586	1	1.0	5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-08	Silver Jet	pyrodigital_fm_30fps	$07		$3		NSSF801					75.0		
+FIRING_DATA_ROW		55.586	1	1.0	10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other		P-10	Silver Jet	pyrodigital_fm_30fps	$09		$4		NSSF801					75.0		
+FIRING_DATA_ROW		56.262	1	1.0	-10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-02	Silver Jet	pyrodigital_fm_30fps	$01		$6		NSSF801					75.0		
+FIRING_DATA_ROW		56.262	1	1.0	-5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-04	Silver Jet	pyrodigital_fm_30fps	$03		$5		NSSF801					75.0		
+FIRING_DATA_ROW		56.262	1	1.0	0.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-06	Silver Jet	pyrodigital_fm_30fps	$05		$8		NSSF801					75.0		
+FIRING_DATA_ROW		56.262	1	1.0	5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-08	Silver Jet	pyrodigital_fm_30fps	$07		$5		NSSF801					75.0		
+FIRING_DATA_ROW		56.262	1	1.0	10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	-40.0	P-10	Silver Jet	pyrodigital_fm_30fps	$09		$6		NSSF801					75.0		
+FIRING_DATA_ROW		56.562	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		56.984	1	1.0	-10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-02	Silver Jet	pyrodigital_fm_30fps	$01		$B		NSSF801					75.0		
+FIRING_DATA_ROW		56.984	1	1.0	-5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-04	Silver Jet	pyrodigital_fm_30fps	$03		$B		NSSF801					75.0		
+FIRING_DATA_ROW		56.984	1	1.0	0.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-06	Silver Jet	pyrodigital_fm_30fps	$05		$E		NSSF801					75.0		
+FIRING_DATA_ROW		56.984	1	1.0	5.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-08	Silver Jet	pyrodigital_fm_30fps	$07		$B		NSSF801					75.0		
+FIRING_DATA_ROW		56.984	1	1.0	10.0 0.0 -4.0			0.0	0.3	Silver Jet 8m 1s ( = 6 m )	3"	Other	40.0	P-10	Silver Jet	pyrodigital_fm_30fps	$09		$B		NSSF801					75.0		
+FIRING_DATA_ROW		58.667	1	0.01	7.5 0.0 -12.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-19	silver jet	pyrodigital_fm_30fps	$10		$2		900003E					130.0		
+FIRING_DATA_ROW		58.707	1	0.01	5.0 0.0 -12.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-18	silver jet	pyrodigital_fm_30fps	$0F		$1		900003E					130.0		
+FIRING_DATA_ROW		58.747	1	0.01	2.5 0.0 -12.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-17	silver jet	pyrodigital_fm_30fps	$0E		$1		900003E					130.0		
+FIRING_DATA_ROW		58.787	1	0.01	0.0 0.0 -12.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-16	silver jet	pyrodigital_fm_30fps	$0D		$1		900003E					130.0		
+FIRING_DATA_ROW		58.827	1	0.01	-2.5 0.0 -12.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-15	silver jet	pyrodigital_fm_30fps	$0C		$1		900003E					130.0		
+FIRING_DATA_ROW		58.867	1	0.01	-5.0 0.0 -12.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-14	silver jet	pyrodigital_fm_30fps	$0B		$1		900003E					130.0		
+FIRING_DATA_ROW		58.907	1	0.01	-7.5 0.0 -12.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-13	silver jet	pyrodigital_fm_30fps	$0A		$2		900003E					130.0		
+FIRING_DATA_ROW		58.947	1	0.01	10.0 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-10	silver jet	pyrodigital_fm_30fps	$09		$2		900003E					130.0		
+FIRING_DATA_ROW		58.987	1	0.01	7.5 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-09	silver jet	pyrodigital_fm_30fps	$08		$0		900003E					130.0		
+FIRING_DATA_ROW		59.027	1	0.01	5.0 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-08	silver jet	pyrodigital_fm_30fps	$07		$1		900003E					130.0		
+FIRING_DATA_ROW		59.067	1	0.01	2.5 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-07	silver jet	pyrodigital_fm_30fps	$06		$0		900003E					130.0		
+FIRING_DATA_ROW		59.107	1	0.01	0.0 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-06	silver jet	pyrodigital_fm_30fps	$05		$4		900003E					130.0		
+FIRING_DATA_ROW		59.147	1	0.01	-2.5 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-05	silver jet	pyrodigital_fm_30fps	$04		$0		900003E					130.0		
+FIRING_DATA_ROW		59.187	1	0.01	-5.0 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-04	silver jet	pyrodigital_fm_30fps	$03		$1		900003E					130.0		
+FIRING_DATA_ROW		59.227	1	0.01	-7.5 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-03	silver jet	pyrodigital_fm_30fps	$02		$0		900003E					130.0		
+FIRING_DATA_ROW		59.267	1	0.01	-10.0 0.0 -4.0			0.0	0.1	PHOTOFLASH WHITE (W/ IGNITER) ES	3"	Other		P-02	silver jet	pyrodigital_fm_30fps	$01		$2		900003E					130.0		
+FIRING_DATA_ROW		59.328	1	1.21	0.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity PURPLE	50mm	Candles		P-06	1.21s Mine Purple	pyrodigital_fm_30fps	$05		$C		200614					175.0		
+FIRING_DATA_ROW		59.428	1	2.0	-10.0 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-01	flame projector	firetek_dmx_device_11col	02		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	-7.5 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-02	flame projector	firetek_dmx_device_11col	03		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	-5.0 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-03	flame projector	firetek_dmx_device_11col	04		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	-2.5 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-04	flame projector	firetek_dmx_device_11col	05		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	0.0 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-05	flame projector	firetek_dmx_device_11col	06		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	2.5 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-06	flame projector	firetek_dmx_device_11col	07		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	5.0 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-07	flame projector	firetek_dmx_device_11col	08		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	7.5 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-08	flame projector	firetek_dmx_device_11col	09		dmx		T							
+FIRING_DATA_ROW		59.428	1	2.0	10.0 0.0 1.0			0.0	0.0	Gasol T	3"	Other		G-09	flame projector	firetek_dmx_device_11col	10		dmx		T							
+FIRING_DATA_ROW		59.801	1	1.21	-5.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity PURPLE	50mm	Candles		P-04	1.21s Mine Purple	pyrodigital_fm_30fps	$03		$9		200614					175.0		
+FIRING_DATA_ROW		59.801	1	1.21	5.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity PURPLE	50mm	Candles		P-08	1.21s Mine Purple	pyrodigital_fm_30fps	$07		$9		200614					175.0		
+FIRING_DATA_ROW		59.904	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		60.254	1	1.21	-10.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity PURPLE	50mm	Candles		P-02	1.21s Mine Purple	pyrodigital_fm_30fps	$01		$9		200614					175.0		
+FIRING_DATA_ROW		60.254	1	1.21	10.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity PURPLE	50mm	Candles		P-10	1.21s Mine Purple	pyrodigital_fm_30fps	$09		$9		200614					175.0		
+FIRING_DATA_ROW		60.354	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		60.882	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		61.166	1	1.21	-10.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity LEMON	50mm	Candles		P-02	1.21s Mine Lemon	pyrodigital_fm_30fps	$01		$8		200603					175.0		
+FIRING_DATA_ROW		61.166	1	1.21	10.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity LEMON	50mm	Candles		P-10	1.21s Mine Lemon	pyrodigital_fm_30fps	$09		$8		200603					175.0		
+FIRING_DATA_ROW		61.636	1	1.21	-5.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity LEMON	50mm	Candles		P-04	1.21s Mine Lemon	pyrodigital_fm_30fps	$03		$8		200603					175.0		
+FIRING_DATA_ROW		61.636	1	1.21	5.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity LEMON	50mm	Candles		P-08	1.21s Mine Lemon	pyrodigital_fm_30fps	$07		$8		200603					175.0		
+FIRING_DATA_ROW		61.736	0	0.0				0.0	0.0			Other																
+FIRING_DATA_ROW		62.078	1	1.21	0.0 0.0 -4.0			0.0	0.1	45 mm Mine High Luminosity LEMON	50mm	Candles		P-06	1.21s Mine Lemon	pyrodigital_fm_30fps	$05		$B		200603					175.0		
+FIRING_DATA_ROW		63.058	1	1.54	0.0 0.0 -4.0			0.0	0.0	13-fan Red Wave comet w blue mine	30mm	Cakes		P-06	1.54s Red Wave Comet w/ Blue Mine	pyrodigital_fm_30fps	$05		$2		13W-5					450.0		
+FIRING_DATA_ROW		63.058	1	0.05	0.0 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-05	very very bright red jet	firetek_dmx_device_11col	06		dmx		S							
+FIRING_DATA_ROW		63.48	1	0.05	-2.5 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-04	very very bright red jet	firetek_dmx_device_11col	05		dmx		S							
+FIRING_DATA_ROW		63.48	1	0.05	2.5 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-06	very very bright red jet	firetek_dmx_device_11col	07		dmx		S							
+FIRING_DATA_ROW		63.946	1	1.54	-5.0 0.0 -4.0			0.0	0.0	13-fan Red Wave comet w blue mine	30mm	Cakes		P-04	1.54s Red Wave Comet w/ Blue Mine	pyrodigital_fm_30fps	$03		$0		13W-5					450.0		
+FIRING_DATA_ROW		63.946	1	1.54	5.0 0.0 -4.0			0.0	0.0	13-fan Red Wave comet w blue mine	30mm	Cakes		P-08	1.54s Red Wave Comet w/ Blue Mine	pyrodigital_fm_30fps	$07		$0		13W-5					450.0		
+FIRING_DATA_ROW		63.946	1	0.05	-5.0 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-03	very very bright red jet	firetek_dmx_device_11col	04		dmx		S							
+FIRING_DATA_ROW		63.946	1	0.05	5.0 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-07	very very bright red jet	firetek_dmx_device_11col	08		dmx		S							
+FIRING_DATA_ROW		64.403	1	0.05	-7.5 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-02	very very bright red jet	firetek_dmx_device_11col	03		dmx		S							
+FIRING_DATA_ROW		64.403	1	0.05	7.5 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-08	very very bright red jet	firetek_dmx_device_11col	09		dmx		S							
+FIRING_DATA_ROW		64.836	1	1.54	-10.0 0.0 -4.0			0.0	0.0	13-fan Red Wave comet w blue mine	30mm	Cakes		P-02	1.54s Red Wave Comet w/ Blue Mine	pyrodigital_fm_30fps	$01		$0		13W-5					450.0		
+FIRING_DATA_ROW		64.836	1	1.54	0.0 0.0 -4.0			0.0	0.0	13-fan Red Wave comet w blue mine	30mm	Cakes		P-06	1.54s Red Wave Comet w/ Blue Mine	pyrodigital_fm_30fps	$05		$3		13W-5					450.0		
+FIRING_DATA_ROW		64.836	1	1.54	10.0 0.0 -4.0			0.0	0.0	13-fan Red Wave comet w blue mine	30mm	Cakes		P-10	1.54s Red Wave Comet w/ Blue Mine	pyrodigital_fm_30fps	$09		$0		13W-5					450.0		
+FIRING_DATA_ROW		64.884	1	0.05	-10.0 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-01	very very bright red jet	firetek_dmx_device_11col	02		dmx		S							
+FIRING_DATA_ROW		64.884	1	0.05	10.0 0.0 1.0			0.0	0.0	Gasol S	3"	Other		G-09	very very bright red jet	firetek_dmx_device_11col	10		dmx		S							

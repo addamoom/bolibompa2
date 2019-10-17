@@ -17,9 +17,6 @@ main_win = ThemedTk(theme="black")  # Tk()
 main_win.minsize(width=800, height=300)
 main_win.title("Bolibompa3")
 
-# main_win.style = Style()
-# main_win.style.theme_use('step')
-
 main_win.finale_file = ''
 gff_file = ''
 create_order = 0
@@ -36,7 +33,7 @@ wb_gff = ''
 wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 
 ws_gff = ''
-ws_bulk = wb_bulk['Bulklager']
+ws_bulk = wb_bulk[wb_bulk.sheetnames[0]]
 
 table = ''
 folder_bulk = ''
@@ -45,6 +42,10 @@ folder_error = ''
 
 total_bulk = 0
 total_gff = 0
+
+ign_old = 0
+ign_1m = 0
+ign_5m = 0
 
 enter_factor = ''
 
@@ -106,7 +107,7 @@ def write_dmxcues(filepath):
     # output: csv-fil med dmxcues formaterade för lightfactory, lägger den i samma dir som finale filen
     fname = os.path.join(filepath, get_file_name(str(main_win.finale_file)))
 
-    with open(re.sub('\.csv$', '', fname) + 'toLightfactory.csv', 'w+', newline='') as csvfile:
+    with open(re.sub('\.txt$', '', fname) + 'toLightfactory.csv', 'w+', newline='') as csvfile:
         fieldnames = ['namn', 'tid', 'shortcut', '?']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -139,6 +140,8 @@ def search_assortment():
         if row_cues[0] == 'BB':
             row_cues[1] = '0'
             plocka_eget.append(row_cues)
+        elif row_cues[0] == 'PYROT-IGN-1M' or row_cues[0] == 'PYROT-IGN-5M' or row_cues[0] == 'PYROT-IGN-GAMLA':
+            plocka_eget.append(row_cues)
         else:
             for row_bulk in ws_bulk:
                 if row_cues[0] == row_bulk[0].value:  # är det rätt pjäs?
@@ -147,7 +150,6 @@ def search_assortment():
                         row_cues[1] = float(row_bulk[6].value)
                         row_cues[4] = row_cues[1]
                         total_bulk = total_bulk + float(row_cues[1])
-                        print(row_cues[1])
                         if plocka_eget:  # är listan tom?
                             for row_pe in plocka_eget:
                                 if row_cues[0] == row_pe[0]:  # matcha artnr
@@ -196,7 +198,6 @@ def search_gff_lager(row):
                         row_plocklista[4] = str(int(row_plocklista[4]) + int(row_plocklista[1]))
                         multi_flag = 1
                 if not multi_flag:
-                    print(row)
                     plocka_gff.append(row)
                 multi_flag = 0
             else:
@@ -237,13 +238,26 @@ def kbk_flames():
 
 
 def scan_list():
-    global analyzed
+    global analyzed, ign_1m, ign_5m, ign_old
     if main_win.finale_file and gff_file:
         print('Båda filerna finns')
+
+        ign_1m = simpledialog.askinteger(title="", prompt="Hur många eltändare 1m (Svart)?")
+        ign_5m = simpledialog.askinteger(title="", prompt="Hur många eltändare 5m  (Orange)?")
+        ign_old = simpledialog.askinteger(title="", prompt="Hur många gamla eltändare?")
+
+        i1m = ign_1m * 9
+        i5m = ign_5m * 9
+        iold = ign_old
+
+        # Varning för fulkod. Känsliga programmerare bör blunda
+        pyrocues.append('PYROT-IGN-1M' + '\t' + '0' + '\t' + 'Eltändare 1m (svart)' +'\t' + str(ign_1m) + '\t' + str(i1m))
+        pyrocues.append('PYROT-IGN-5M' + '\t' + '0' + '\t' + 'Eltändare 5m (Orange)' +'\t' + str(ign_5m) + '\t' + str(i5m))
+        pyrocues.append('PYROT-IGN-GAMLA' + '\t' + '0' + '\t' + 'Eltändare Gamla' +'\t' + str(ign_old) + '\t' + str(iold))
+
         search_assortment()
         if plocka_eget:
             display_lists(folder_bulk, plocka_eget)
-            print(total_bulk)
             table.item('folder_bulk', values=['', '', '', total_bulk])
         if plocka_gff:
             display_lists(folder_gff, plocka_gff)
@@ -291,7 +305,7 @@ def print_list(location):
 
 def re_init():
     global folder_bulk, folder_gff, folder_error, total_bulk, total_gff, pyrocues, dmxques, shortcutFile
-    global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk
+    global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk, ign_old, ign_1m, ign_5m
 
     total_gff = 0
     total_bulk = 0
@@ -313,10 +327,13 @@ def re_init():
     wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 
     ws_gff = ''
-    ws_bulk = wb_bulk['Bulklager']
+    ws_bulk = wb_bulk[wb_bulk.sheetnames[0]]
 
     analyzed = 0
 
+    ign_1m = 0
+    ign_5m = 0
+    ign_old = 0
     messagebox.showinfo("Klar!", "Din session är nu rensad. Var god välj nya filer")
 
 
@@ -353,8 +370,7 @@ def init(main_win):
     button_frame = Frame(main_win)
     button_frame.pack(side=BOTTOM)
 
-
-    bttn_import_finale = Button(button_frame, text="Importera Finale-csv", command=import_finale)
+    bttn_import_finale = Button(button_frame, text="Importera Finale-TXT", command=import_finale)
     bttn_import_finale.pack(side=LEFT)
 
     bttn_import_gff = Button(button_frame, text="Importera GFF-prislista", command=import_gff)
