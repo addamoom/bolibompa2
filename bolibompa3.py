@@ -68,12 +68,12 @@ folder_bulk = ''
 folder_gff = ''
 folder_error = ''
 
+antal_bulk = 0
+antal_gff = 0
+antal_error = 0
+
 total_bulk = 0
 total_gff = 0
-
-ign_old = 0
-ign_1m = 0
-ign_5m = 0
 
 enter_factor = ''
 
@@ -93,7 +93,7 @@ def import_finale():
 
     flag = 0
     with open(main_win.finale_file, newline='', encoding='utf-8') as finalef:
-        finale_file = csv.reader(finalef,  delimiter='\t')
+        finale_file = csv.reader(finalef, delimiter='\t')
         for f_row in finale_file:
             if len(f_row) > 2:  # sök inte igenom skabbiga tomma rader
                 with open('shortcuts.csv', newline='',
@@ -161,14 +161,12 @@ def search_assortment():
 
     pyrocues.pop(0)  # ta bort rad med rubriker
 
-    global total_bulk
+    global total_bulk, antal_bulk
 
     pcs = csv.reader(pyrocues, delimiter='\t')
     for row_cues in pcs:
-        if row_cues[0] == 'BB':
-            row_cues[1] = '0'
-            plocka_eget.append(row_cues)
-        elif row_cues[0] == 'PYROT-IGN-1M' or row_cues[0] == 'PYROT-IGN-5M' or row_cues[0] == 'PYROT-IGN-GAMLA':
+
+        if row_cues[0] == 'PYROT-IGN-1M' or row_cues[0] == 'PYROT-IGN-5M' or row_cues[0] == 'PYROT-IGN-GAMLA':
             plocka_eget.append(row_cues)
         else:
             for row_bulk in ws_bulk:
@@ -182,16 +180,18 @@ def search_assortment():
                             for row_pe in plocka_eget:
                                 if row_cues[0] == row_pe[0]:  # matcha artnr
                                     row_pe[3] = str(int(row_pe[3]) + 1)  # öka antalet
+                                    antal_bulk += 1
                                     row_bulk[3].value = row_bulk[3].value - 1  # subtrahera från listan
                                     row_pe[4] = str(int(row_pe[4]) + int(row_pe[1]))  # öka totalpris
                                     nflag = 1
                                     break
                             if not nflag:
                                 plocka_eget.append(row_cues)
-                            row_bulk[3].value = row_bulk[3].value - 1
+                                antal_bulk += 1
                             nflag = 0
                         else:
                             plocka_eget.append(row_cues)
+                            antal_bulk += 1
                     else:
                         search_gff_lager(row_cues)
             if not mflag:
@@ -206,7 +206,7 @@ def search_gff_lager(row):
     error_flag = 1
     multi_flag = 0
     error_multi = 0
-    global total_gff
+    global total_gff, antal_gff, antal_error
 
     for row_gff in ws_gff:
         if row[0] == row_gff[3].value:
@@ -219,6 +219,7 @@ def search_gff_lager(row):
                     row_gff[12].value = 1
                 else:
                     row_gff[12].value = int(row_gff[12].value) + 1
+                    antal_gff += 1
 
                 for row_plocklista in plocka_gff:
                     if row_plocklista[0] == row[0]:
@@ -243,6 +244,7 @@ def search_gff_lager(row):
                 errors.append(row)
         else:
             errors.append(row)
+        antal_error += 1
 
 
 def kbk_pyro():
@@ -269,30 +271,16 @@ def scan_list():
     global analyzed, ign_1m, ign_5m, ign_old
     if main_win.finale_file and gff_file:
         print('Båda filerna finns')
-
-        ign_1m = simpledialog.askinteger(title="", prompt="Hur många eltändare 1m (Svart)?")
-        ign_5m = simpledialog.askinteger(title="", prompt="Hur många eltändare 5m  (Orange)?")
-        ign_old = simpledialog.askinteger(title="", prompt="Hur många gamla eltändare?")
-
-        i1m = ign_1m * 9
-        i5m = ign_5m * 9
-        iold = ign_old
-
-        # Varning för fulkod. Känsliga programmerare bör blunda
-        pyrocues.append('PYROT-IGN-1M' + '\t' + '0' + '\t' + 'Eltändare 1m (svart)' +'\t' + str(ign_1m) + '\t' + str(i1m))
-        pyrocues.append('PYROT-IGN-5M' + '\t' + '0' + '\t' + 'Eltändare 5m (Orange)' +'\t' + str(ign_5m) + '\t' + str(i5m))
-        pyrocues.append('PYROT-IGN-GAMLA' + '\t' + '0' + '\t' + 'Eltändare Gamla' +'\t' + str(ign_old) + '\t' + str(iold))
-
         search_assortment()
         if plocka_eget:
             display_lists(folder_bulk, plocka_eget)
-            table.item('folder_bulk', values=['', '', '', total_bulk])
+            table.item('folder_bulk', values=['', '', antal_bulk, round(total_bulk, 2)])
         if plocka_gff:
             display_lists(folder_gff, plocka_gff)
-            table.item('folder_gff', values=['', '', '', total_gff])
-
+            table.item('folder_gff', values=['', '', antal_gff, round(total_gff, 2)])
         if errors:
             display_lists(folder_error, errors)
+            table.item('folder_error', values=['','', antal_error, ''])
         analyzed = 1
     else:
         messagebox.showinfo("Varning!", "Du måste välja filer först")
@@ -329,6 +317,34 @@ def print_list(location):
             ws1.append(row)
 
     wb1.save(filename=path)
+
+
+def add_ign():
+    global total_bulk
+    ign_1m = simpledialog.askinteger(title="", prompt="Hur många eltändare 1m (Svart)?")
+    ign_5m = simpledialog.askinteger(title="", prompt="Hur många eltändare 5m  (Orange)?")
+    ign_old = simpledialog.askinteger(title="", prompt="Hur många gamla eltändare?")
+
+    i1m = ign_1m * 9
+    i5m = ign_5m * 9
+    iold = ign_old
+
+    igniters = []
+
+    # Varning för fulkod. Känsliga programmerare bör blunda
+    if ign_1m > 0: igniters.append(
+        ['PYROT-IGN-1M'] + ['9'] + ['Eltändare 1m (svart)'] + [str(ign_1m)] + [str(i1m)])
+    if ign_5m > 0: igniters.append(
+        ['PYROT-IGN-5M'] + ['9'] + ['Eltändare 5m (Orange)'] + [str(ign_5m)] + [str(i5m)])
+
+    if ign_old > 0: igniters.append(
+        # 'PYROT-IGN-GAMLA' + '\t' + '0' + '\t' + 'Eltändare Gamla' + '\t' + str(ign_old) + '\t' + str(iold))
+        ['PYROT-IGN-GAMLA'] + ['1'] + ['Eltändare Gamla'] + [str(ign_old)] + [str(iold)])
+    if igniters:
+        total_bulk += (i1m + i5m + iold)
+        display_lists(folder_bulk, igniters)
+        plocka_eget.extend(igniters)
+        table.item('folder_bulk', values=['', '', '', total_bulk])
 
 
 def re_init():
@@ -368,9 +384,10 @@ def re_init():
 def init(main_win):
     global table, folder_bulk, folder_gff, folder_error, enter_factor
     info_frame = Frame(main_win)
+    info_frame.pack(fill='both', expand=TRUE)
 
-#  info_scroll = Scrollbar(info_frame)
-#  info_scroll.pack(side=RIGHT)
+    #  info_scroll = Scrollbar(info_frame)
+    #  info_scroll.pack(side=RIGHT)
 
     table = Treeview(info_frame)  # gör denna global
     table["columns"] = ("one", "two", "three", "four", "five")
@@ -393,10 +410,12 @@ def init(main_win):
 
     table.tag_configure('folder', font='bold')
 
-    table.pack(side=TOP)  # , fill=X)
+    table.pack(side=TOP, expand=True)  # , fill=X)
 
     button_frame = Frame(main_win)
-    button_frame.pack(side=BOTTOM)
+
+    bttn_add_ign = Button(button_frame, text="Lägg till eltändare", command=add_ign)
+    bttn_add_ign.pack(side=TOP)
 
     bttn_import_finale = Button(button_frame, text="Importera Finale-TXT", command=import_finale)
     bttn_import_finale.pack(side=LEFT)
@@ -417,6 +436,8 @@ def init(main_win):
     bttn_clear.pack(side=RIGHT)
 
     info_frame.pack(side=TOP, fill=Y)
+    button_frame.pack(side=BOTTOM, expand=TRUE)
+
 
 
 init(main_win)
