@@ -13,6 +13,34 @@ from openpyxl import Workbook
 from ttkthemes import ThemedTk
 
 
+#splashscreenbös
+splashscreen = Tk()
+splashscreen.overrideredirect(True)
+splashscreen.geometry('432x432')
+splashscreen.wait_visibility(splashscreen)
+#splashscreen.attributes('-alpha', 0.3)
+canvas = Canvas(splashscreen, height=432, width=432, bg="yellow")
+canvas.pack()
+image = PhotoImage(file="BombermanSigil.gif")
+
+canvas.create_image(216, 216, image=image)
+
+splashscreen.after(3000, splashscreen.destroy)
+splashscreen.mainloop()
+
+
+#width = splashscreen.winfo_screenwidth()
+#height = splashscreen.winfo_screenheight()
+#splashscreen.geometry('%dx%d+%d+%d' % (width*0.2, height*0.2, width*0.2, height*0.2))
+#image_file = "BombermanSigil.gif"
+#image = tkinter.PhotoImage(file=image_file)
+#canvas = tkinter.Canvas(splashscreen, height=height*0.8, width=width*0.8, bg="brown")
+#canvas.create_image(width*0.8/2, height*0.8/2, image=image)
+#canvas.pack()
+
+#splashscreen.after(2000, splashscreen.destroy)
+#splashscreen.mainloop()
+
 main_win = ThemedTk(theme="black")  # Tk()
 main_win.minsize(width=800, height=300)
 main_win.title("Bolibompa3")
