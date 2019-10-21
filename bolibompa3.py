@@ -224,7 +224,7 @@ def search_gff_lager(row):
                 for row_plocklista in plocka_gff:
                     if row_plocklista[0] == row[0]:
                         row_plocklista[3] = str(int(row_plocklista[3]) + 1)
-                        row_plocklista[4] = str(int(row_plocklista[4]) + int(row_plocklista[1]))
+                        row_plocklista[4] = str(float(row_plocklista[4]) + float(row_plocklista[1]))
                         multi_flag = 1
                 if not multi_flag:
                     plocka_gff.append(row)
@@ -255,6 +255,8 @@ def kbk_pyro():
             print_list(location)
             path = os.path.join(location, 'GFF_Order.xlsx')
             wb_gff.save(path)
+            wb_bulk.save('Bulklager.xlsx')
+
             messagebox.showinfo("Färdigt!", "Nu finns det listor. Coolt va?")
     else:
         messagebox.showinfo("Fel!", 'Klicka på "Visa Lista" först  , din smurf!')
@@ -320,7 +322,7 @@ def print_list(location):
 
 
 def add_ign():
-    global total_bulk
+    global total_bulk, ws_bulk, antal_bulk
     ign_1m = simpledialog.askinteger(title="", prompt="Hur många eltändare 1m (Svart)?")
     ign_5m = simpledialog.askinteger(title="", prompt="Hur många eltändare 5m  (Orange)?")
     ign_old = simpledialog.askinteger(title="", prompt="Hur många gamla eltändare?")
@@ -332,19 +334,38 @@ def add_ign():
     igniters = []
 
     # Varning för fulkod. Känsliga programmerare bör blunda
-    if ign_1m > 0: igniters.append(
-        ['PYROT-IGN-1M'] + ['9'] + ['Eltändare 1m (svart)'] + [str(ign_1m)] + [str(i1m)])
-    if ign_5m > 0: igniters.append(
-        ['PYROT-IGN-5M'] + ['9'] + ['Eltändare 5m (Orange)'] + [str(ign_5m)] + [str(i5m)])
+    if ign_1m > 0:
+        antal_bulk += ign_1m
+        igniters.append(
+        ['P-IGN-1M'] + ['9'] + ['Eltändare 1m (svart)'] + [str(ign_1m)] + [str(i1m)])
 
-    if ign_old > 0: igniters.append(
-        # 'PYROT-IGN-GAMLA' + '\t' + '0' + '\t' + 'Eltändare Gamla' + '\t' + str(ign_old) + '\t' + str(iold))
-        ['PYROT-IGN-GAMLA'] + ['1'] + ['Eltändare Gamla'] + [str(ign_old)] + [str(iold)])
+    if ign_5m > 0:
+        antal_bulk += ign_5m
+        igniters.append(
+        ['P-IGN-5M'] + ['9'] + ['Eltändare 5m (Orange)'] + [str(ign_5m)] + [str(i5m)])
+
+
+    if ign_old > 0:
+        antal_bulk += ign_old
+        igniters.append(
+        ['P-IGN-G'] + ['1'] + ['Eltändare Gamla'] + [str(ign_old)] + [str(iold)])
+
+    for row in ws_bulk:
+        if row[0].value == 'P-IGN-1M':
+            row[3].value -= ign_1m
+            print(row[3].value)
+        elif row[0].value == 'P-IGN-5M':
+            row[3].value -= ign_5m
+        elif row[0].value == 'P-IGN-G':
+            row[3].value -= ign_old
+
     if igniters:
         total_bulk += (i1m + i5m + iold)
+        total_bulk = round(total_bulk, 2)
         display_lists(folder_bulk, igniters)
         plocka_eget.extend(igniters)
-        table.item('folder_bulk', values=['', '', '', total_bulk])
+        print('hallå')
+        table.item('folder_bulk', values=['', '', antal_bulk, total_bulk])
 
 
 def re_init():
