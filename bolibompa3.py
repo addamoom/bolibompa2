@@ -12,13 +12,12 @@ import ntpath
 from openpyxl import Workbook
 from ttkthemes import ThemedTk
 
-
-#splashscreenbös
+# splashscreenbös
 splashscreen = Tk()
 splashscreen.overrideredirect(True)
 splashscreen.geometry('432x432')
 splashscreen.wait_visibility(splashscreen)
-#splashscreen.attributes('-alpha', 0.3)
+# splashscreen.attributes('-alpha', 0.3)
 canvas = Canvas(splashscreen, height=432, width=432, bg="yellow")
 canvas.pack()
 image = PhotoImage(file="BombermanSigil.gif")
@@ -28,18 +27,17 @@ canvas.create_image(216, 216, image=image)
 splashscreen.after(3000, splashscreen.destroy)
 splashscreen.mainloop()
 
+# width = splashscreen.winfo_screenwidth()
+# height = splashscreen.winfo_screenheight()
+# splashscreen.geometry('%dx%d+%d+%d' % (width*0.2, height*0.2, width*0.2, height*0.2))
+# image_file = "BombermanSigil.gif"
+# image = tkinter.PhotoImage(file=image_file)
+# canvas = tkinter.Canvas(splashscreen, height=height*0.8, width=width*0.8, bg="brown")
+# canvas.create_image(width*0.8/2, height*0.8/2, image=image)
+# canvas.pack()
 
-#width = splashscreen.winfo_screenwidth()
-#height = splashscreen.winfo_screenheight()
-#splashscreen.geometry('%dx%d+%d+%d' % (width*0.2, height*0.2, width*0.2, height*0.2))
-#image_file = "BombermanSigil.gif"
-#image = tkinter.PhotoImage(file=image_file)
-#canvas = tkinter.Canvas(splashscreen, height=height*0.8, width=width*0.8, bg="brown")
-#canvas.create_image(width*0.8/2, height*0.8/2, image=image)
-#canvas.pack()
-
-#splashscreen.after(2000, splashscreen.destroy)
-#splashscreen.mainloop()
+# splashscreen.after(2000, splashscreen.destroy)
+# splashscreen.mainloop()
 
 main_win = ThemedTk(theme="black")  # Tk()
 main_win.minsize(width=800, height=300)
@@ -155,96 +153,74 @@ def get_file_name(path):
     return tail
 
 
-def search_assortment():
-    nflag = 0  # används för att fylla i plocklistan
-    mflag = 0  # används för att avgöra om en rad ska sökas efter i gffs lista
+def search_stock(list_of_cues):
+    global antal_error
+    for row_cue in list_of_cues:
+        if is_in_bulk(row_cue):
+            continue
+        elif is_in_gff(row_cue):
+            continue
+        else:
+            row_cue[1] = '0'
+            row_cue[4] = '0'
+            antal_error += 1
+            errors.append(row_cue)
 
-    pyrocues.pop(0)  # ta bort rad med rubriker
 
+# when reading an excel-cell, every value is read as a string, which is why they are parsed
+
+def is_in_bulk(row_cue):
     global total_bulk, antal_bulk
+    for row_bulk in ws_bulk:
+        if row_cue[0] == row_bulk[0].value and row_bulk[3].value > 0:  # check if in stock
+            row_bulk[3].value = int(row_bulk[3].value) - 1  # remove one from stock
+            row_cue[1] = float(row_bulk[6].value)  # set price
+            row_cue[4] = row_cue[1]  # set total price (used later)
+            plocka_eget.append(row_cue)  # add to plocklista
+            total_bulk += row_cue[1]
+            antal_bulk += 1
+            return True  # go back to searchthingy
 
-    pcs = csv.reader(pyrocues, delimiter='\t')
-    for row_cues in pcs:
-
-        if row_cues[0] == 'PYROT-IGN-1M' or row_cues[0] == 'PYROT-IGN-5M' or row_cues[0] == 'PYROT-IGN-GAMLA':
-            plocka_eget.append(row_cues)
-        else:
-            for row_bulk in ws_bulk:
-                if row_cues[0] == row_bulk[0].value:  # är det rätt pjäs?
-                    mflag = 1
-                    if row_bulk[3].value > 0:  # finns den i lager?
-                        row_cues[1] = float(row_bulk[6].value)
-                        row_cues[4] = row_cues[1]
-                        total_bulk = total_bulk + float(row_cues[1])
-                        if plocka_eget:  # är listan tom?
-                            for row_pe in plocka_eget:
-                                if row_cues[0] == row_pe[0]:  # matcha artnr
-                                    row_pe[3] = str(int(row_pe[3]) + 1)  # öka antalet
-                                    antal_bulk += 1
-                                    row_bulk[3].value = row_bulk[3].value - 1  # subtrahera från listan
-                                    row_pe[4] = str(int(row_pe[4]) + int(row_pe[1]))  # öka totalpris
-                                    nflag = 1
-                                    break
-                            if not nflag:
-                                plocka_eget.append(row_cues)
-                                antal_bulk += 1
-                            nflag = 0
-                        else:
-                            plocka_eget.append(row_cues)
-                            antal_bulk += 1
-                    else:
-                        search_gff_lager(row_cues)
-            if not mflag:
-                search_gff_lager(row_cues)
-            mflag = 0
+    return False
 
 
-def search_gff_lager(row):
-    # om produtken finns i lista, men ej i lager
-    # om produkten inte finns i lista
-
-    error_flag = 1
-    multi_flag = 0
-    error_multi = 0
-    global total_gff, antal_gff, antal_error
-
+def is_in_gff(row_cue):
+    global total_gff, antal_gff
     for row_gff in ws_gff:
-        if row[0] == row_gff[3].value:
-            row[1] = float(row_gff[9].value)
-            row[4] = row[1]
-            error_flag = 0
-            if row_gff[6].value > 0:  # finns i lager?
-                total_gff = total_gff + row[1]
-                if row_gff[12].value is None:
-                    row_gff[12].value = 1
-                else:
-                    row_gff[12].value = int(row_gff[12].value) + 1
-                    antal_gff += 1
+        if row_cue[0] == row_gff[3].value and row_gff[6].value > 0:  # check if in stock
+            row_gff[6].value = int(row_gff[6].value) - 1  # remove one from stock
+            row_cue[1] = float(row_gff[9].value)  # set the price
+            row_cue[4] = row_cue[1]  # total price (used later)
 
-                for row_plocklista in plocka_gff:
-                    if row_plocklista[0] == row[0]:
-                        row_plocklista[3] = str(int(row_plocklista[3]) + 1)
-                        row_plocklista[4] = str(float(row_plocklista[4]) + float(row_plocklista[1]))
-                        multi_flag = 1
-                if not multi_flag:
-                    plocka_gff.append(row)
-                multi_flag = 0
+            if row_gff[12].value is None:  # increase order number
+                row_gff[12].value = 1
             else:
-                error_flag = 1
+                row_gff[12].value += 1
 
-    if error_flag:
-        row[1] = ''
-        row[4] = ''
-        if errors:
-            for row_error in errors:
-                if row_error[0] == row[0]:
-                    row_error[3] = str(int(row_error[3]) + 1)
-                    error_multi = 1
-            if not error_multi:
-                errors.append(row)
+            plocka_gff.append(row_cue)  # add the row to the plocklista
+            total_gff += row_cue[1]
+            antal_gff += 1
+            return True  # go back to searchthingy
+
+    return False
+
+
+def sum_list(lista):
+    lista.sort()
+    summed_list = []
+    index = 0
+    summed_list.append(lista[0])        # add the first element of the old to the new
+    lista.pop(0)                        # and remove it from the old
+    for row in lista:                   # loop through the old list
+        if row[0] == summed_list[index][0]:
+            summed_list[index][3] = int(summed_list[index][3]) + 1
+            summed_list[index][4] = float(summed_list[index][4]) + float(summed_list[index][1])
         else:
-            errors.append(row)
-        antal_error += 1
+            summed_list[index][4] = round(summed_list[index][4], 2)
+            summed_list.append(row)
+            index += 1
+
+    return summed_list
 
 
 def kbk_pyro():
@@ -270,19 +246,27 @@ def kbk_flames():
 
 
 def scan_list():
-    global analyzed, ign_1m, ign_5m, ign_old
+    global analyzed, ign_1m, ign_5m, ign_old, plocka_eget, plocka_gff, errors
     if main_win.finale_file and gff_file:
         print('Båda filerna finns')
-        search_assortment()
+        # search_assortment()
+
+        pyrocues.pop(0)
+        pcs = csv.reader(pyrocues, delimiter='\t')
+        search_stock(pcs)
+
         if plocka_eget:
+            plocka_eget = sum_list(plocka_eget)
             display_lists(folder_bulk, plocka_eget)
             table.item('folder_bulk', values=['', '', antal_bulk, round(total_bulk, 2)])
         if plocka_gff:
+            plocka_gff = sum_list(plocka_gff)
             display_lists(folder_gff, plocka_gff)
             table.item('folder_gff', values=['', '', antal_gff, round(total_gff, 2)])
         if errors:
+            errors = sum_list(errors)
             display_lists(folder_error, errors)
-            table.item('folder_error', values=['','', antal_error, ''])
+            table.item('folder_error', values=['', '', antal_error, ''])
         analyzed = 1
     else:
         messagebox.showinfo("Varning!", "Du måste välja filer först")
@@ -337,18 +321,17 @@ def add_ign():
     if ign_1m > 0:
         antal_bulk += ign_1m
         igniters.append(
-        ['P-IGN-1M'] + ['9'] + ['Eltändare 1m (svart)'] + [str(ign_1m)] + [str(i1m)])
+            ['P-IGN-1M'] + ['9'] + ['Eltändare 1m (svart)'] + [str(ign_1m)] + [str(i1m)])
 
     if ign_5m > 0:
         antal_bulk += ign_5m
         igniters.append(
-        ['P-IGN-5M'] + ['9'] + ['Eltändare 5m (Orange)'] + [str(ign_5m)] + [str(i5m)])
-
+            ['P-IGN-5M'] + ['9'] + ['Eltändare 5m (Orange)'] + [str(ign_5m)] + [str(i5m)])
 
     if ign_old > 0:
         antal_bulk += ign_old
         igniters.append(
-        ['P-IGN-G'] + ['1'] + ['Eltändare Gamla'] + [str(ign_old)] + [str(iold)])
+            ['P-IGN-G'] + ['1'] + ['Eltändare Gamla'] + [str(ign_old)] + [str(iold)])
 
     for row in ws_bulk:
         if row[0].value == 'P-IGN-1M':
@@ -458,7 +441,6 @@ def init(main_win):
 
     info_frame.pack(side=TOP, fill=Y)
     button_frame.pack(side=BOTTOM, expand=TRUE)
-
 
 
 init(main_win)
