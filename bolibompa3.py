@@ -3,6 +3,7 @@ import datetime
 import os
 from decimal import *
 import re
+import tkinter as tk
 from tkinter import *
 from tkinter import filedialog, messagebox, simpledialog, ttk
 import openpyxl
@@ -39,9 +40,12 @@ splashscreen.mainloop()
 # splashscreen.after(2000, splashscreen.destroy)
 # splashscreen.mainloop()
 
-main_win = ThemedTk(theme="black")  # Tk()
+main_win = ThemedTk(theme="black")
+main_win.configure(background='#626262')
 main_win.minsize(width=800, height=300)
 main_win.title("Bolibompa3")
+
+ttk.Style().configure("black.Treeview", borderwidth=15)
 
 main_win.finale_file = ''
 gff_file = ''
@@ -61,7 +65,7 @@ wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 ws_gff = ''
 ws_bulk = wb_bulk[wb_bulk.sheetnames[0]]
 
-table = ''
+ttk.table = ''
 folder_bulk = ''
 folder_gff = ''
 folder_error = ''
@@ -76,6 +80,17 @@ total_gff = 0
 enter_factor = ''
 
 analyzed = 0
+
+img_bttn_if = PhotoImage(file="Buttons/button_importera-finale-txt.png")
+img_bttn_ig = PhotoImage(file="Buttons/button_importera-gff-prislista.png")
+img_bttn_lte = PhotoImage(file="Buttons/button_lagg-till-eltandare.png")
+img_bttn_r = PhotoImage(file="Buttons/button_rensa.png")
+img_bttn_sfl = PhotoImage(file="Buttons/button_skapa-flammlista.png")
+img_bttn_spl = PhotoImage(file="Buttons/button_skapa-plocklista.png")
+img_bttn_vp = PhotoImage(file="Buttons/button_visa-pjaser.png")
+
+button_style = Style()
+button_style.configure('TButton', bd=0, background='#626262')
 
 
 def import_finale():
@@ -110,8 +125,8 @@ def import_finale():
                             break
             if flag == 0:
                 if f_row[21]:
-                    #           art.nr              pris            beskrivning
-                    f_cell = f_row[21] + '\t' + '0' + '\t' + f_row[10] + '\t' + '1' + '\t' + '0'
+                    #           art.nr              pris            beskrivning antal       totpris         kommentar
+                    f_cell = f_row[21] + '\t' + '0' + '\t' + f_row[10] + '\t' + '1' + '\t' + '0' + '\t' + ''
                     pyrocues.append(f_cell)  # skulle kunna filtrera bort onödiga saker ur den här arrayen
                     # print("pyrocue added")
                     # print(len(pyrocues))
@@ -176,6 +191,8 @@ def is_in_bulk(row_cue):
             row_bulk[3].value = int(row_bulk[3].value) - 1  # remove one from stock
             row_cue[1] = float(row_bulk[6].value)  # set price
             row_cue[4] = row_cue[1]  # set total price (used later)
+            if row_bulk[13].value is not None:
+                row_cue[5] = row_bulk[13].value  # add comment
             plocka_eget.append(row_cue)  # add to plocklista
             total_bulk += row_cue[1]
             antal_bulk += 1
@@ -209,14 +226,14 @@ def sum_list(lista):
     lista.sort()
     summed_list = []
     index = 0
-    summed_list.append(lista[0])        # add the first element of the old to the new
-    lista.pop(0)                        # and remove it from the old
-    for row in lista:                   # loop through the old list
+    summed_list.append(lista[0])  # add the first element of the old to the new
+    lista.pop(0)  # and remove it from the old
+    for row in lista:  # loop through the old list
         if row[0] == summed_list[index][0]:
             summed_list[index][3] = int(summed_list[index][3]) + 1
             summed_list[index][4] = float(summed_list[index][4]) + float(summed_list[index][1])
         else:
-            summed_list[index][4] = round(summed_list[index][4], 2)
+            summed_list[index][4] = round(float(summed_list[index][4]), 2)
             summed_list.append(row)
             index += 1
 
@@ -246,7 +263,7 @@ def kbk_flames():
 
 
 def scan_list():
-    global analyzed, ign_1m, ign_5m, ign_old, plocka_eget, plocka_gff, errors
+    global table, analyzed, ign_1m, ign_5m, ign_old, plocka_eget, plocka_gff, errors
     if main_win.finale_file and gff_file:
         print('Båda filerna finns')
         # search_assortment()
@@ -274,7 +291,7 @@ def scan_list():
 
 def display_lists(folder, list):
     for row in list:
-        table.insert(folder, "end", text=row[0], values=[row[1], row[2], row[3], row[4]])
+        table.insert(folder, "end", text=row[0], values=[row[1], row[2], row[3], row[4], row[5]])
 
 
 def print_list(location):
@@ -289,7 +306,7 @@ def print_list(location):
     ws1.column_dimensions['D'].width = 20
     ws1.column_dimensions['E'].width = 20
 
-    ws1.append(['Art.nr', 'Enhetspris', 'Beskrivning', 'Antal', 'Totalt pris'])
+    ws1.append(['Art.nr', 'Enhetspris', 'Beskrivning', 'Antal', 'Totalt pris', 'Kommentar'])
     ws1.append([''])
     ws1.append(['Från Bulk'])
     if plocka_eget:
@@ -321,17 +338,17 @@ def add_ign():
     if ign_1m > 0:
         antal_bulk += ign_1m
         igniters.append(
-            ['P-IGN-1M'] + ['9'] + ['Eltändare 1m (svart)'] + [str(ign_1m)] + [str(i1m)])
+            ['P-IGN-1M'] + [9] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m] + [''])
 
     if ign_5m > 0:
         antal_bulk += ign_5m
         igniters.append(
-            ['P-IGN-5M'] + ['9'] + ['Eltändare 5m (Orange)'] + [str(ign_5m)] + [str(i5m)])
+            ['P-IGN-5M'] + [9] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m] + [''])
 
     if ign_old > 0:
         antal_bulk += ign_old
         igniters.append(
-            ['P-IGN-G'] + ['1'] + ['Eltändare Gamla'] + [str(ign_old)] + [str(iold)])
+            ['P-IGN-G'] + [1] + ['Eltändare Gamla'] + [ign_old] + [iold] + [''])
 
     for row in ws_bulk:
         if row[0].value == 'P-IGN-1M':
@@ -347,20 +364,20 @@ def add_ign():
         total_bulk = round(total_bulk, 2)
         display_lists(folder_bulk, igniters)
         plocka_eget.extend(igniters)
-        print('hallå')
         table.item('folder_bulk', values=['', '', antal_bulk, total_bulk])
 
 
 def re_init():
-    global folder_bulk, folder_gff, folder_error, total_bulk, total_gff, pyrocues, dmxques, shortcutFile
+    global table, folder_bulk, folder_gff, folder_error, total_bulk, total_gff, pyrocues, dmxques, shortcutFile
     global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk, ign_old, ign_1m, ign_5m
 
     total_gff = 0
     total_bulk = 0
 
     table.delete(*table.get_children())
-    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk], tags='folder')
-    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff], tags='folder')
+    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk, ''],
+                               tags='folder')
+    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff, ''], tags='folder')
     folder_error = table.insert("", 3, 'folder_error', text="Error", tags='folder')
 
     table.tag_configure('folder', font='bold')
@@ -387,60 +404,66 @@ def re_init():
 
 def init(main_win):
     global table, folder_bulk, folder_gff, folder_error, enter_factor
-    info_frame = Frame(main_win)
+    global img_bttn_if, img_bttn_ig, img_bttn_lte, img_bttn_r, img_bttn_sfl, img_bttn_spl, img_bttn_vp
+    info_frame = tk.Frame(main_win, bd=0)
+    info_frame.grid(column=0, row=0, sticky="ns")
     info_frame.pack(fill='both', expand=TRUE)
 
     #  info_scroll = Scrollbar(info_frame)
     #  info_scroll.pack(side=RIGHT)
+    table_style = ttk.Style()
+    table_style.layout('Pyrot.Treeview',[('Pyrot.Treeview.treearea', {'sticky': 'nswe'})])
+    table = ttk.Treeview(info_frame, style='Pyrot.Treeview')  # gör denna global
 
-    table = Treeview(info_frame)  # gör denna global
-    table["columns"] = ("one", "two", "three", "four", "five")
+    table["columns"] = ("one", "two", "three", "four", "five", "six")
     table.column("#0", width=150, minwidth=150, stretch=NO)
     table.column("#1", width=150, minwidth=150, stretch=NO)
     table.column("#2", width=500, minwidth=200)
     table.column("#3", width=150, minwidth=50, stretch=NO)
     table.column("#4", width=150, minwidth=50, stretch=NO)
+    table.column("#5", width=500, minwidth=200)
 
     table.heading("#0", text="Art. NR", anchor=W)
     table.heading("#1", text="Pris", anchor=W)
     table.heading("#2", text="Beskrivning", anchor=W)
     table.heading("#3", text="Antal", anchor=W)
     table.heading("#4", text="Totalpris", anchor=W)
-
+    table.heading("#5", text="Kommentar", anchor=W)
     # Level 1
-    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk], tags='folder')
-    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff], tags='folder')
+    folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk, ''],
+                               tags='folder')
+    folder_gff = table.insert("", 2, 'folder_gff', text="GFF", values=['', '', '', total_gff, ''], tags='folder')
     folder_error = table.insert("", 3, 'folder_error', text="Error", tags='folder')
 
     table.tag_configure('folder', font='bold')
 
-    table.pack(side=TOP, expand=True)  # , fill=X)
+    table.pack(side=TOP, fill='y', expand=True)  # , fill=X)
 
-    button_frame = Frame(main_win)
+    button_frame = tk.Frame(main_win, bg='#626262')
 
-    bttn_add_ign = Button(button_frame, text="Lägg till eltändare", command=add_ign)
+    bttn_add_ign = tk.Button(button_frame, image=img_bttn_lte, command=add_ign, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
     bttn_add_ign.pack(side=TOP)
 
-    bttn_import_finale = Button(button_frame, text="Importera Finale-TXT", command=import_finale)
+    bttn_import_finale = tk.Button(button_frame, image=img_bttn_if, command=import_finale, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
     bttn_import_finale.pack(side=LEFT)
 
-    bttn_import_gff = Button(button_frame, text="Importera GFF-prislista", command=import_gff)
+    bttn_import_gff = tk.Button(button_frame, image=img_bttn_ig, command=import_gff, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
     bttn_import_gff.pack(side=LEFT)
 
-    bttn_search_list = Button(button_frame, text="Visa pjäser", command=scan_list)
+    bttn_search_list = tk.Button(button_frame, image=img_bttn_vp, command=scan_list, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
     bttn_search_list.pack(side=LEFT)
 
-    bttn_transact = Button(button_frame, text="Skapa plocklista", command=kbk_pyro)
+    bttn_transact = tk.Button(button_frame, image=img_bttn_spl, command=kbk_pyro, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
     bttn_transact.pack(side=RIGHT)
 
-    bttn_flames = Button(button_frame, text="Skapa flammlista", command=kbk_flames)
+    bttn_flames = tk.Button(button_frame, image=img_bttn_sfl, command=kbk_flames, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
     bttn_flames.pack(side=RIGHT)
 
-    bttn_clear = Button(button_frame, text="Rensa", command=re_init)
+    bttn_clear = tk.Button(button_frame, image=img_bttn_r, command=re_init, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
     bttn_clear.pack(side=RIGHT)
 
     info_frame.pack(side=TOP, fill=Y)
-    button_frame.pack(side=BOTTOM, expand=TRUE)
+    button_frame.pack(side=BOTTOM)
 
 
 init(main_win)
