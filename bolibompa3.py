@@ -10,7 +10,8 @@ import openpyxl
 from tkinter.ttk import Treeview
 from tkinter.ttk import *
 import ntpath
-from openpyxl import Workbook
+from openpyxl import Workbook, styles
+from openpyxl.styles import *
 from ttkthemes import ThemedTk
 
 # splashscreenbös
@@ -60,9 +61,11 @@ plocka_gff = []
 errors = []
 
 wb_gff = ''
+wb_gff_reset = ''
 wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 
 ws_gff = ''
+ws_gff_reset = ''
 ws_bulk = wb_bulk[wb_bulk.sheetnames[0]]
 
 ttk.table = ''
@@ -125,8 +128,8 @@ def import_finale():
                             break
             if flag == 0:
                 if f_row[21]:
-                    #           art.nr              pris            beskrivning antal       totpris         kommentar
-                    f_cell = f_row[21] + '\t' + '0' + '\t' + f_row[10] + '\t' + '1' + '\t' + '0' + '\t' + ''
+                    #           art.nr              beskrivning       antal       enhetspris summa         kommentar
+                    f_cell = f_row[21] + '\t' + f_row[10] + '\t' + '1' + '\t' + '0' + '\t' + '0' + '\t' + ''
                     pyrocues.append(f_cell)  # skulle kunna filtrera bort onödiga saker ur den här arrayen
                     # print("pyrocue added")
                     # print(len(pyrocues))
@@ -135,12 +138,12 @@ def import_finale():
 
 
 def import_gff():
-    global gff_file
-    global wb_gff
-    global ws_gff
+    global gff_file, wb_gff, ws_gff,wb_gff_reset, ws_gff_reset
     gff_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFF-filen')
     wb_gff = openpyxl.load_workbook(gff_file)
-    ws_gff = wb_gff['Wholesale - Product list - Exte']
+    wb_gff_reset = openpyxl.load_workbook(gff_file)
+    ws_gff = wb_gff[wb_gff.sheetnames[0]]
+    ws_gff_reset = wb_gff_reset[wb_gff_reset.sheetnames[0]]
 
 
 def write_dmxcues(filepath):
@@ -176,7 +179,7 @@ def search_stock(list_of_cues):
         elif is_in_gff(row_cue):
             continue
         else:
-            row_cue[1] = '0'
+            row_cue[3] = '0'
             row_cue[4] = '0'
             antal_error += 1
             errors.append(row_cue)
@@ -189,12 +192,12 @@ def is_in_bulk(row_cue):
     for row_bulk in ws_bulk:
         if row_cue[0] == row_bulk[0].value and row_bulk[3].value > 0:  # check if in stock
             row_bulk[3].value = int(row_bulk[3].value) - 1  # remove one from stock
-            row_cue[1] = float(row_bulk[6].value)  # set price
-            row_cue[4] = row_cue[1]  # set total price (used later)
+            row_cue[3] = float(row_bulk[6].value)  # set price
+            row_cue[4] = row_cue[3]  # set total price (used later)
             if row_bulk[13].value is not None:
                 row_cue[5] = row_bulk[13].value  # add comment
             plocka_eget.append(row_cue)  # add to plocklista
-            total_bulk += row_cue[1]
+            total_bulk += row_cue[3]
             antal_bulk += 1
             return True  # go back to searchthingy
 
@@ -206,35 +209,36 @@ def is_in_gff(row_cue):
     for row_gff in ws_gff:
         if row_cue[0] == row_gff[3].value and row_gff[6].value > 0:  # check if in stock
             row_gff[6].value = int(row_gff[6].value) - 1  # remove one from stock
-            row_cue[1] = float(row_gff[9].value)  # set the price
-            row_cue[4] = row_cue[1]  # total price (used later)
+            row_cue[3] = float(row_gff[9].value)  # set the price
+            row_cue[4] = row_cue[3]  # total price (used later)
 
             if row_gff[12].value is None:  # increase order number
-                row_gff[12].value = 1
-            else:
-                row_gff[12].value += 1
+                row_gff[12].value = 0
+
+            row_gff[12].value += 1
 
             plocka_gff.append(row_cue)  # add the row to the plocklista
-            total_gff += row_cue[1]
+            total_gff += row_cue[3]
             antal_gff += 1
             return True  # go back to searchthingy
 
     return False
 
 
-def sum_list(lista):
+def sum_list(lista):            
     lista.sort()
     summed_list = []
     index = 0
     summed_list.append(lista[0])  # add the first element of the old to the new
     lista.pop(0)  # and remove it from the old
     for row in lista:  # loop through the old list
+        row[2] = int(row[2])
         if row[0] == summed_list[index][0]:
-            summed_list[index][3] = int(summed_list[index][3]) + 1
-            summed_list[index][4] = float(summed_list[index][4]) + float(summed_list[index][1])
+            summed_list[index][2] = int(summed_list[index][2]) + 1              # increment antal
+            summed_list[index][4] = float(summed_list[index][4]) + float(summed_list[index][3]) # öka summa
         else:
-            summed_list[index][4] = round(float(summed_list[index][4]), 2)
-            summed_list.append(row)
+            summed_list[index][4] = round(float(summed_list[index][4]), 2)      #runda av summan
+            summed_list.append(row)                                         # lägg till nya raden
             index += 1
 
     return summed_list
@@ -247,6 +251,11 @@ def kbk_pyro():
             location = filedialog.askdirectory()
             print_list(location)
             path = os.path.join(location, 'GFF_Order.xlsx')
+            currentrow = 1
+            for eachRow in ws_gff_reset.iter_rows():
+                ws_gff.cell(row=currentrow, column=7).value = ws_gff_reset.cell(row=currentrow, column=7).value
+                currentrow += 1
+
             wb_gff.save(path)
             wb_bulk.save('Bulklager.xlsx')
 
@@ -275,15 +284,15 @@ def scan_list():
         if plocka_eget:
             plocka_eget = sum_list(plocka_eget)
             display_lists(folder_bulk, plocka_eget)
-            table.item('folder_bulk', values=['', '', antal_bulk, round(total_bulk, 2)])
+            table.item('folder_bulk', values=['',antal_bulk, '',  round(total_bulk, 2)])
         if plocka_gff:
             plocka_gff = sum_list(plocka_gff)
             display_lists(folder_gff, plocka_gff)
-            table.item('folder_gff', values=['', '', antal_gff, round(total_gff, 2)])
+            table.item('folder_gff', values=['', antal_gff,'',  round(total_gff, 2)])
         if errors:
             errors = sum_list(errors)
             display_lists(folder_error, errors)
-            table.item('folder_error', values=['', '', antal_error, ''])
+            table.item('folder_error', values=['',antal_error, '',  ''])
         analyzed = 1
     else:
         messagebox.showinfo("Varning!", "Du måste välja filer först")
@@ -301,12 +310,14 @@ def print_list(location):
     ws1 = wb1.active
     ws1.title = 'Pjäser'
     ws1.column_dimensions['A'].width = 20
-    ws1.column_dimensions['B'].width = 20
-    ws1.column_dimensions['C'].width = 60
-    ws1.column_dimensions['D'].width = 20
-    ws1.column_dimensions['E'].width = 20
+    ws1.column_dimensions['B'].width = 60
+    ws1.column_dimensions['C'].width = 10
+    ws1.column_dimensions['D'].width = 10
+    ws1.column_dimensions['E'].width = 10
+    ws1.column_dimensions['F'].width = 30
 
-    ws1.append(['Art.nr', 'Enhetspris', 'Beskrivning', 'Antal', 'Totalt pris', 'Kommentar'])
+    ws1.append(['Art.nr', 'Beskrivning', 'Antal', 'Pris', 'Summa', 'Kommentar'])
+
     ws1.append([''])
     ws1.append(['Från Bulk'])
     if plocka_eget:
@@ -319,14 +330,26 @@ def print_list(location):
         for row in plocka_gff:
             ws1.append(row)
 
+    for row in ws1:
+        if row[0].value == 'Från Bulk' or row[0].value == 'Från GFF':
+            for i in range(0, 5):
+                row[i].font = Font(name='Calibri', bold=True)
+                row[i].fill = PatternFill(fill_type=SOLID, fgColor='00F6A54A')
+        else:
+            row[2].fill = PatternFill(fill_type=SOLID, fgColor='00cfd8dc')
+
+    for cell in ws1["1:1"]:
+        cell.font = Font(name='Calibri', bold=True)
+        cell.fill = PatternFill(fill_type=SOLID, fgColor='00F57D00')
+
     wb1.save(filename=path)
 
 
 def add_ign():
     global total_bulk, ws_bulk, antal_bulk
-    ign_1m = simpledialog.askinteger(title="", prompt="Hur många eltändare 1m (Svart)?")
-    ign_5m = simpledialog.askinteger(title="", prompt="Hur många eltändare 5m  (Orange)?")
-    ign_old = simpledialog.askinteger(title="", prompt="Hur många gamla eltändare?")
+    ign_1m = simpledialog.askinteger(title="", prompt="Hur många eltändare 1m (Svart)?", initialvalue=0)
+    ign_5m = simpledialog.askinteger(title="", prompt="Hur många eltändare 5m  (Orange)?", initialvalue=0)
+    ign_old = simpledialog.askinteger(title="", prompt="Hur många gamla eltändare?", initialvalue=0)
 
     i1m = ign_1m * 9
     i5m = ign_5m * 9
@@ -338,17 +361,17 @@ def add_ign():
     if ign_1m > 0:
         antal_bulk += ign_1m
         igniters.append(
-            ['P-IGN-1M'] + [9] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m] + [''])
+            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [9] + [i1m] + [''])
 
     if ign_5m > 0:
         antal_bulk += ign_5m
         igniters.append(
-            ['P-IGN-5M'] + [9] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m] + [''])
+            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m]+ [9] + [i5m] + [''])
 
     if ign_old > 0:
         antal_bulk += ign_old
         igniters.append(
-            ['P-IGN-G'] + [1] + ['Eltändare Gamla'] + [ign_old] + [iold] + [''])
+            ['P-IGN-G'] + ['Eltändare Gamla'] + [ign_old] + [1] + [iold] + [''])
 
     for row in ws_bulk:
         if row[0].value == 'P-IGN-1M':
@@ -364,7 +387,7 @@ def add_ign():
         total_bulk = round(total_bulk, 2)
         display_lists(folder_bulk, igniters)
         plocka_eget.extend(igniters)
-        table.item('folder_bulk', values=['', '', antal_bulk, total_bulk])
+        table.item('folder_bulk', values=['', antal_bulk, '', total_bulk, ''])
 
 
 def re_init():
@@ -417,17 +440,17 @@ def init(main_win):
 
     table["columns"] = ("one", "two", "three", "four", "five", "six")
     table.column("#0", width=150, minwidth=150, stretch=NO)
-    table.column("#1", width=150, minwidth=150, stretch=NO)
-    table.column("#2", width=500, minwidth=200)
-    table.column("#3", width=150, minwidth=50, stretch=NO)
-    table.column("#4", width=150, minwidth=50, stretch=NO)
+    table.column("#1", width=300, minwidth=200)
+    table.column("#2", width=50, minwidth=50, stretch=NO)
+    table.column("#3", width=50, minwidth=50, stretch=NO)
+    table.column("#4", width=75, minwidth=75, stretch=NO)
     table.column("#5", width=500, minwidth=200)
 
     table.heading("#0", text="Art. NR", anchor=W)
-    table.heading("#1", text="Pris", anchor=W)
-    table.heading("#2", text="Beskrivning", anchor=W)
-    table.heading("#3", text="Antal", anchor=W)
-    table.heading("#4", text="Totalpris", anchor=W)
+    table.heading("#1", text="Beskrivning", anchor=W)
+    table.heading("#2", text="Antal", anchor=W)
+    table.heading("#3", text="Pris", anchor=W)
+    table.heading("#4", text="Summa", anchor=W)
     table.heading("#5", text="Kommentar", anchor=W)
     # Level 1
     folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk, ''],
