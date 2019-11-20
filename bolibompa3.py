@@ -12,6 +12,7 @@ from tkinter.ttk import *
 import ntpath
 from openpyxl import Workbook, styles
 from openpyxl.styles import *
+from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 from ttkthemes import ThemedTk
 
 # splashscreenbös
@@ -189,13 +190,14 @@ def search_stock(list_of_cues):
 
 def is_in_bulk(row_cue):
     global total_bulk, antal_bulk
+    
     for row_bulk in ws_bulk:
         if row_cue[0] == row_bulk[0].value and row_bulk[3].value > 0:  # check if in stock
             row_bulk[3].value = int(row_bulk[3].value) - 1  # remove one from stock
             row_cue[3] = float(row_bulk[6].value)  # set price
             row_cue[4] = row_cue[3]  # set total price (used later)
-            if row_bulk[13].value is not None:
-                row_cue[5] = row_bulk[13].value  # add comment
+            if row_bulk[14].value is not None:
+                row_cue[5] = row_bulk[14].value  # add comment
             plocka_eget.append(row_cue)  # add to plocklista
             total_bulk += row_cue[3]
             antal_bulk += 1
