@@ -395,9 +395,14 @@ def add_ign():
 def re_init():
     global table, folder_bulk, folder_gff, folder_error, total_bulk, total_gff, pyrocues, dmxques, shortcutFile
     global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk, ign_old, ign_1m, ign_5m
+    global antal_bulk, antal_error, antal_gff
 
     total_gff = 0
     total_bulk = 0
+
+    antal_bulk = 0
+    antal_error = 0
+    antal_gff = 0
 
     table.delete(*table.get_children())
     folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk, ''],
