@@ -139,7 +139,7 @@ def import_finale():
 
 
 def import_gff():
-    global gff_file, wb_gff, ws_gff,wb_gff_reset, ws_gff_reset
+    global gff_file, wb_gff, ws_gff, wb_gff_reset, ws_gff_reset
     gff_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFF-filen')
     wb_gff = openpyxl.load_workbook(gff_file)
     wb_gff_reset = openpyxl.load_workbook(gff_file)
@@ -190,7 +190,7 @@ def search_stock(list_of_cues):
 
 def is_in_bulk(row_cue):
     global total_bulk, antal_bulk
-    
+
     for row_bulk in ws_bulk:
         if row_cue[0] == row_bulk[0].value and row_bulk[3].value > 0:  # check if in stock
             row_bulk[3].value = int(row_bulk[3].value) - 1  # remove one from stock
@@ -227,7 +227,7 @@ def is_in_gff(row_cue):
     return False
 
 
-def sum_list(lista):            
+def sum_list(lista):
     lista.sort()
     summed_list = []
     index = 0
@@ -236,11 +236,11 @@ def sum_list(lista):
     for row in lista:  # loop through the old list
         row[2] = int(row[2])
         if row[0] == summed_list[index][0]:
-            summed_list[index][2] = int(summed_list[index][2]) + 1              # increment antal
-            summed_list[index][4] = float(summed_list[index][4]) + float(summed_list[index][3]) # öka summa
+            summed_list[index][2] = int(summed_list[index][2]) + 1  # increment antal
+            summed_list[index][4] = float(summed_list[index][4]) + float(summed_list[index][3])  # öka summa
         else:
-            summed_list[index][4] = round(float(summed_list[index][4]), 2)      #runda av summan
-            summed_list.append(row)                                         # lägg till nya raden
+            summed_list[index][4] = round(float(summed_list[index][4]), 2)  # runda av summan
+            summed_list.append(row)  # lägg till nya raden
             index += 1
 
     return summed_list
@@ -286,15 +286,15 @@ def scan_list():
         if plocka_eget:
             plocka_eget = sum_list(plocka_eget)
             display_lists(folder_bulk, plocka_eget)
-            table.item('folder_bulk', values=['',antal_bulk, '',  round(total_bulk, 2)])
+            table.item('folder_bulk', values=['', antal_bulk, '', round(total_bulk, 2)])
         if plocka_gff:
             plocka_gff = sum_list(plocka_gff)
             display_lists(folder_gff, plocka_gff)
-            table.item('folder_gff', values=['', antal_gff,'',  round(total_gff, 2)])
+            table.item('folder_gff', values=['', antal_gff, '', round(total_gff, 2)])
         if errors:
             errors = sum_list(errors)
             display_lists(folder_error, errors)
-            table.item('folder_error', values=['',antal_error, '',  ''])
+            table.item('folder_error', values=['', antal_error, '', ''])
         analyzed = 1
     else:
         messagebox.showinfo("Varning!", "Du måste välja filer först")
@@ -351,11 +351,17 @@ def add_ign():
     global total_bulk, ws_bulk, antal_bulk
     ign_1m = simpledialog.askinteger(title="", prompt="Hur många eltändare 1m (Svart)?", initialvalue=0)
     ign_5m = simpledialog.askinteger(title="", prompt="Hur många eltändare 5m  (Orange)?", initialvalue=0)
-    ign_old = simpledialog.askinteger(title="", prompt="Hur många gamla eltändare?", initialvalue=0)
 
-    i1m = ign_1m * 9
-    i5m = ign_5m * 9
-    iold = ign_old
+    i1m_price = 0
+    i5m_price = 0
+
+    for row in ws_bulk:
+        if row[0].value == 'P-IGN-1M':
+            row[3].value -= ign_1m
+            i1m_price = int(row[6].value)
+        elif row[0].value == 'P-IGN-5M':
+            row[3].value -= ign_5m
+            i5m_price = int(row[6].value)
 
     igniters = []
 
@@ -363,30 +369,17 @@ def add_ign():
     if ign_1m > 0:
         antal_bulk += ign_1m
         igniters.append(
-            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [9] + [i1m] + [''])
+            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m_price] + [i1m_price*ign_1m] + [''])
 
     if ign_5m > 0:
         antal_bulk += ign_5m
         igniters.append(
-            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m]+ [9] + [i5m] + [''])
-
-    if ign_old > 0:
-        antal_bulk += ign_old
-        igniters.append(
-            ['P-IGN-G'] + ['Eltändare Gamla'] + [ign_old] + [1] + [iold] + [''])
-
-    for row in ws_bulk:
-        if row[0].value == 'P-IGN-1M':
-            row[3].value -= ign_1m
-            print(row[3].value)
-        elif row[0].value == 'P-IGN-5M':
-            row[3].value -= ign_5m
-        elif row[0].value == 'P-IGN-G':
-            row[3].value -= ign_old
+            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m_price] + [i5m_price*ign_5m] + [''])
 
     if igniters:
-        total_bulk += (i1m + i5m + iold)
+        total_bulk += ((i1m_price*ign_1m) + (i5m_price*ign_5m))
         total_bulk = round(total_bulk, 2)
+       # search_stock(igniters)
         display_lists(folder_bulk, igniters)
         plocka_eget.extend(igniters)
         table.item('folder_bulk', values=['', antal_bulk, '', total_bulk, ''])
@@ -442,7 +435,7 @@ def init(main_win):
     #  info_scroll = Scrollbar(info_frame)
     #  info_scroll.pack(side=RIGHT)
     table_style = ttk.Style()
-    table_style.layout('Pyrot.Treeview',[('Pyrot.Treeview.treearea', {'sticky': 'nswe'})])
+    table_style.layout('Pyrot.Treeview', [('Pyrot.Treeview.treearea', {'sticky': 'nswe'})])
     table = ttk.Treeview(info_frame, style='Pyrot.Treeview')  # gör denna global
 
     table["columns"] = ("one", "two", "three", "four", "five", "six")
@@ -471,25 +464,32 @@ def init(main_win):
 
     button_frame = tk.Frame(main_win, bg='#626262')
 
-    bttn_add_ign = tk.Button(button_frame, image=img_bttn_lte, command=add_ign, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
+    bttn_add_ign = tk.Button(button_frame, image=img_bttn_lte, command=add_ign, bd=0, bg='#626262',
+                             activebackground='#626262', highlightthickness=0)
     bttn_add_ign.pack(side=TOP)
 
-    bttn_import_finale = tk.Button(button_frame, image=img_bttn_if, command=import_finale, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
+    bttn_import_finale = tk.Button(button_frame, image=img_bttn_if, command=import_finale, bd=0, bg='#626262',
+                                   activebackground='#626262', highlightthickness=0)
     bttn_import_finale.pack(side=LEFT)
 
-    bttn_import_gff = tk.Button(button_frame, image=img_bttn_ig, command=import_gff, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
+    bttn_import_gff = tk.Button(button_frame, image=img_bttn_ig, command=import_gff, bd=0, bg='#626262',
+                                activebackground='#626262', highlightthickness=0)
     bttn_import_gff.pack(side=LEFT)
 
-    bttn_search_list = tk.Button(button_frame, image=img_bttn_vp, command=scan_list, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
+    bttn_search_list = tk.Button(button_frame, image=img_bttn_vp, command=scan_list, bd=0, bg='#626262',
+                                 activebackground='#626262', highlightthickness=0)
     bttn_search_list.pack(side=LEFT)
 
-    bttn_transact = tk.Button(button_frame, image=img_bttn_spl, command=kbk_pyro, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
+    bttn_transact = tk.Button(button_frame, image=img_bttn_spl, command=kbk_pyro, bd=0, bg='#626262',
+                              activebackground='#626262', highlightthickness=0)
     bttn_transact.pack(side=RIGHT)
 
-    bttn_flames = tk.Button(button_frame, image=img_bttn_sfl, command=kbk_flames, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
+    bttn_flames = tk.Button(button_frame, image=img_bttn_sfl, command=kbk_flames, bd=0, bg='#626262',
+                            activebackground='#626262', highlightthickness=0)
     bttn_flames.pack(side=RIGHT)
 
-    bttn_clear = tk.Button(button_frame, image=img_bttn_r, command=re_init, bd=0, bg='#626262', activebackground='#626262', highlightthickness=0)
+    bttn_clear = tk.Button(button_frame, image=img_bttn_r, command=re_init, bd=0, bg='#626262',
+                           activebackground='#626262', highlightthickness=0)
     bttn_clear.pack(side=RIGHT)
 
     info_frame.pack(side=TOP, fill=Y)
