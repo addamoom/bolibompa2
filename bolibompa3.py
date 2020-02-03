@@ -358,10 +358,10 @@ def add_ign():
     for row in ws_bulk:
         if row[0].value == 'P-IGN-1M':
             row[3].value -= ign_1m
-            i1m_price = int(row[6].value)
+            i1m_price = float(row[6].value)
         elif row[0].value == 'P-IGN-5M':
             row[3].value -= ign_5m
-            i5m_price = int(row[6].value)
+            i5m_price = float(row[6].value)
 
     igniters = []
 
@@ -369,12 +369,12 @@ def add_ign():
     if ign_1m > 0:
         antal_bulk += ign_1m
         igniters.append(
-            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m_price] + [i1m_price*ign_1m] + [''])
+            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m_price] + [round(i1m_price*ign_1m, 2)] + [''])
 
     if ign_5m > 0:
         antal_bulk += ign_5m
         igniters.append(
-            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m_price] + [i5m_price*ign_5m] + [''])
+            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m_price] + [round(i5m_price*ign_5m, 2)] + [''])
 
     if igniters:
         total_bulk += ((i1m_price*ign_1m) + (i5m_price*ign_5m))
@@ -387,7 +387,7 @@ def add_ign():
 
 def re_init():
     global table, folder_bulk, folder_gff, folder_error, total_bulk, total_gff, pyrocues, dmxques, shortcutFile
-    global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk, ign_old, ign_1m, ign_5m
+    global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk, ign_1m, ign_5m
     global antal_bulk, antal_error, antal_gff
 
     total_gff = 0
@@ -421,7 +421,7 @@ def re_init():
 
     ign_1m = 0
     ign_5m = 0
-    ign_old = 0
+
     messagebox.showinfo("Klar!", "Din session är nu rensad. Var god välj nya filer")
 
 
