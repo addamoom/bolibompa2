@@ -209,21 +209,28 @@ def is_in_bulk(row_cue):
 def is_in_gff(row_cue):
     global total_gff, antal_gff
     for row_gff in ws_gff:
-        if row_cue[0] == row_gff[3].value and row_gff[6].value > 0:  # check if in stock
-            row_gff[6].value = int(row_gff[6].value) - 1  # remove one from stock
-            row_cue[3] = float(row_gff[9].value)  # set the price
-            row_cue[4] = row_cue[3]  # total price (used later)
+        if row_cue[0] == row_gff[3].value:
+            if row_gff[6].value > 0:  # check if in stock
+                if row_gff[12].value is None:  # increase order number
+                    row_gff[12].value = 0
+                elif row_gff[12].value >= row_gff[6].value:        #the current number of ordered pieces has to be lower than the stock
+                    return False
 
-            if row_gff[12].value is None:  # increase order number
-                row_gff[12].value = 0
+                row_cue[3] = float(row_gff[9].value)  # set the price
+                row_cue[4] = row_cue[3]  # total price (used later)
 
-            row_gff[12].value += 1
+                if row_gff[3].value == "900003E":
+                    print(row_gff[6].value)
+                    print(row_gff[12].value)
 
-            plocka_gff.append(row_cue)  # add the row to the plocklista
-            total_gff += row_cue[3]
-            antal_gff += 1
-            return True  # go back to searchthingy
+                row_gff[12].value += 1
 
+                plocka_gff.append(row_cue)  # add the row to the plocklista
+                total_gff += row_cue[3]
+                antal_gff += 1
+                return True  # go back to searchthingy
+            #else:
+            #    return False
     return False
 
 
@@ -369,17 +376,17 @@ def add_ign():
     if ign_1m > 0:
         antal_bulk += ign_1m
         igniters.append(
-            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m_price] + [round(i1m_price*ign_1m, 2)] + [''])
+            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m_price] + [round(i1m_price * ign_1m, 2)] + [''])
 
     if ign_5m > 0:
         antal_bulk += ign_5m
         igniters.append(
-            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m_price] + [round(i5m_price*ign_5m, 2)] + [''])
+            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m_price] + [round(i5m_price * ign_5m, 2)] + [''])
 
     if igniters:
-        total_bulk += ((i1m_price*ign_1m) + (i5m_price*ign_5m))
+        total_bulk += ((i1m_price * ign_1m) + (i5m_price * ign_5m))
         total_bulk = round(total_bulk, 2)
-       # search_stock(igniters)
+        # search_stock(igniters)
         display_lists(folder_bulk, igniters)
         plocka_eget.extend(igniters)
         table.item('folder_bulk', values=['', antal_bulk, '', total_bulk, ''])
@@ -411,6 +418,7 @@ def re_init():
 
     shortcutFile = open('shortcuts.csv', 'r')
 
+    wb_gff.close()
     wb_gff = ''
     wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 
