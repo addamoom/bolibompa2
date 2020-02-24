@@ -100,6 +100,8 @@ button_style.configure('TButton', bd=0, background='#626262')
 def import_finale():
     main_win.finale_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj Finale-filen')
 
+    main_win.title("Bolibompa3" + " / " + get_file_name(main_win.finale_file))
+
     global plocka_eget, plocka_gff, errors
     getcontext().prec = 2  # behövs för att tidskonverteringen för flammcuerna ska funka
     dmxques.clear()
@@ -397,6 +399,8 @@ def re_init():
     global plocka_eget, plocka_gff, errors, wb_gff, ws_gff, ws_bulk, analyzed, wb_bulk, ign_1m, ign_5m
     global antal_bulk, antal_error, antal_gff
 
+    main_win.title("Bolibompa3")
+
     total_gff = 0
     total_bulk = 0
 
@@ -418,7 +422,7 @@ def re_init():
 
     shortcutFile = open('shortcuts.csv', 'r')
 
-    wb_gff.close()
+    #wb_gff.close()
     wb_gff = ''
     wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 
