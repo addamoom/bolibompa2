@@ -140,13 +140,16 @@ def import_finale():
     print('färdig')
 
 
+# Wb är själva arbetsboken, och ws är det worksheet som man faktiskt ska jobba med
 def import_gff():
-    global gff_file, wb_gff, ws_gff, wb_gff_reset, ws_gff_reset
+    global gff_file, wb_gff, ws_gff  # , wb_gff_reset, ws_gff_reset
     gff_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFF-filen')
     wb_gff = openpyxl.load_workbook(gff_file)
-    wb_gff_reset = openpyxl.load_workbook(gff_file)
+    # wb_gff_reset = openpyxl.load_workbook(gff_file)
     ws_gff = wb_gff[wb_gff.sheetnames[0]]
-    ws_gff_reset = wb_gff_reset[wb_gff_reset.sheetnames[0]]
+
+
+# ws_gff_reset = wb_gff_reset[wb_gff_reset.sheetnames[0]]
 
 
 def write_dmxcues(filepath):
@@ -174,6 +177,8 @@ def get_file_name(path):
     return tail
 
 
+# searches for the fyrverkeripjäs, first in our own stock, second in GFFs lagerlista. If it's not avaliable in either
+# add the pjäs to the error list
 def search_stock(list_of_cues):
     global antal_error
     for row_cue in list_of_cues:
@@ -182,7 +187,7 @@ def search_stock(list_of_cues):
         elif is_in_gff(row_cue):
             continue
         else:
-            row_cue[3] = '0'
+            row_cue[3] = '0'        #no need to have a price if it's not avaliable for purchase
             row_cue[4] = '0'
             antal_error += 1
             errors.append(row_cue)
@@ -211,28 +216,23 @@ def is_in_bulk(row_cue):
 def is_in_gff(row_cue):
     global total_gff, antal_gff
     for row_gff in ws_gff:
-        if row_cue[0] == row_gff[3].value:
+        if row_cue[0] == row_gff[3].value: # if the name matches
             if row_gff[6].value > 0:  # check if in stock
                 if row_gff[12].value is None:  # increase order number
                     row_gff[12].value = 0
-                elif row_gff[12].value >= row_gff[6].value:        #the current number of ordered pieces has to be lower than the stock
+                elif row_gff[12].value >= row_gff[
+                    6].value:  # the current number of ordered pieces has to be lower than the stock
                     return False
 
                 row_cue[3] = float(row_gff[9].value)  # set the price
                 row_cue[4] = row_cue[3]  # total price (used later)
 
-                if row_gff[3].value == "900003E":
-                    print(row_gff[6].value)
-                    print(row_gff[12].value)
-
                 row_gff[12].value += 1
-
                 plocka_gff.append(row_cue)  # add the row to the plocklista
                 total_gff += row_cue[3]
                 antal_gff += 1
                 return True  # go back to searchthingy
-            #else:
-            #    return False
+
     return False
 
 
@@ -242,13 +242,15 @@ def sum_list(lista):
     index = 0
     summed_list.append(lista[0])  # add the first element of the old to the new
     lista.pop(0)  # and remove it from the old
-    for row in lista:  # loop through the old list
+    for row in lista:  # loop through the old list.
         row[2] = int(row[2])
         if row[0] == summed_list[index][0]:
             summed_list[index][2] = int(summed_list[index][2]) + 1  # increment antal
             summed_list[index][4] = float(summed_list[index][4]) + float(summed_list[index][3])  # öka summa
+        # Since the old list is sorted by pjäsnamn, when the names don't match, that pjäs wont occur again,
+        # and we can start counting the next pjäs
         else:
-            summed_list[index][4] = round(float(summed_list[index][4]), 2)  # runda av summan
+            summed_list[index][4] = round(float(summed_list[index][4]), 2)  # runda av pris-summan
             summed_list.append(row)  # lägg till nya raden
             index += 1
 
@@ -263,7 +265,7 @@ def kbk_pyro():
             print_list(location)
             path = os.path.join(location, 'GFF_Order.xlsx')
             currentrow = 1
-            for eachRow in ws_gff_reset.iter_rows():
+            for _ in ws_gff_reset.iter_rows():
                 ws_gff.cell(row=currentrow, column=7).value = ws_gff_reset.cell(row=currentrow, column=7).value
                 currentrow += 1
 
@@ -371,7 +373,6 @@ def add_ign():
         elif row[0].value == 'P-IGN-5M':
             row[3].value -= ign_5m
             i5m_price = float(row[6].value)
-
     igniters = []
 
     # Varning för fulkod. Känsliga programmerare bör blunda
@@ -422,7 +423,6 @@ def re_init():
 
     shortcutFile = open('shortcuts.csv', 'r')
 
-    #wb_gff.close()
     wb_gff = ''
     wb_bulk = openpyxl.load_workbook(filename='Bulklager.xlsx')
 
@@ -437,10 +437,10 @@ def re_init():
     messagebox.showinfo("Klar!", "Din session är nu rensad. Var god välj nya filer")
 
 
-def init(main_win):
+def init(_main_win):
     global table, folder_bulk, folder_gff, folder_error, enter_factor
     global img_bttn_if, img_bttn_ig, img_bttn_lte, img_bttn_r, img_bttn_sfl, img_bttn_spl, img_bttn_vp
-    info_frame = tk.Frame(main_win, bd=0)
+    info_frame = tk.Frame(_main_win, bd=0)
     info_frame.grid(column=0, row=0, sticky="ns")
     info_frame.pack(fill='both', expand=TRUE)
 
@@ -474,7 +474,7 @@ def init(main_win):
 
     table.pack(side=TOP, fill='y', expand=True)  # , fill=X)
 
-    button_frame = tk.Frame(main_win, bg='#626262')
+    button_frame = tk.Frame(_main_win, bg='#626262')
 
     bttn_add_ign = tk.Button(button_frame, image=img_bttn_lte, command=add_ign, bd=0, bg='#626262',
                              activebackground='#626262', highlightthickness=0)
