@@ -18,29 +18,20 @@ from ttkthemes import ThemedTk
 # splashscreenbös
 splashscreen = Tk()
 splashscreen.overrideredirect(True)
-splashscreen.geometry('432x432')
-splashscreen.wait_visibility(splashscreen)
-# splashscreen.attributes('-alpha', 0.3)
+width = splashscreen.winfo_screenwidth()
+height = splashscreen.winfo_screenheight()
+
+x_start = (width / 2) - 216
+y_start = (height / 2) - 216
+splashscreen.geometry('%dx%d+%d+%d' % (432, 432, x_start, y_start))
 canvas = Canvas(splashscreen, height=432, width=432, bg="yellow")
 canvas.pack()
 image = PhotoImage(file="BombermanSigil.gif")
 
 canvas.create_image(216, 216, image=image)
 
-splashscreen.after(3000, splashscreen.destroy)
+splashscreen.after(2500, splashscreen.destroy)
 splashscreen.mainloop()
-
-# width = splashscreen.winfo_screenwidth()
-# height = splashscreen.winfo_screenheight()
-# splashscreen.geometry('%dx%d+%d+%d' % (width*0.2, height*0.2, width*0.2, height*0.2))
-# image_file = "BombermanSigil.gif"
-# image = tkinter.PhotoImage(file=image_file)
-# canvas = tkinter.Canvas(splashscreen, height=height*0.8, width=width*0.8, bg="brown")
-# canvas.create_image(width*0.8/2, height*0.8/2, image=image)
-# canvas.pack()
-
-# splashscreen.after(2000, splashscreen.destroy)
-# splashscreen.mainloop()
 
 main_win = ThemedTk(theme="black")
 main_win.configure(background='#626262')
@@ -176,13 +167,18 @@ def get_file_name(path):
 
 def search_stock(list_of_cues):
     global antal_error
+    indices = find_columns(ws_bulk)
     for row_cue in list_of_cues:
-        if is_in_bulk(row_cue):
+        if is_in_bulk(row_cue, indices):
             continue
         elif is_in_gff(row_cue):
             continue
         else:
+<<<<<<< Updated upstream
             row_cue[3] = '0'
+=======
+            row_cue[3] = '0'  # no need to have a price if it's not avaliable for purchase
+>>>>>>> Stashed changes
             row_cue[4] = '0'
             antal_error += 1
             errors.append(row_cue)
@@ -190,16 +186,16 @@ def search_stock(list_of_cues):
 
 # when reading an excel-cell, every value is read as a string, which is why they are parsed
 
-def is_in_bulk(row_cue):
+def is_in_bulk(row_cue, _indices):
     global total_bulk, antal_bulk
 
     for row_bulk in ws_bulk:
-        if row_cue[0] == row_bulk[0].value and row_bulk[3].value > 0:  # check if in stock
-            row_bulk[3].value = int(row_bulk[3].value) - 1  # remove one from stock
-            row_cue[3] = float(row_bulk[6].value)  # set price
+        if row_cue[0] == row_bulk[_indices[0]].value and row_bulk[_indices[1]].value > 0:  # check if in stock
+            row_bulk[_indices[1]].value = int(row_bulk[_indices[1]].value) - 1  # remove one from stock
+            row_cue[3] = float(row_bulk[_indices[2]].value)  # set price
             row_cue[4] = row_cue[3]  # set total price (used later)
-            if row_bulk[14].value is not None:
-                row_cue[5] = row_bulk[14].value  # add comment
+            if row_bulk[_indices[3]].value is not None:
+                row_cue[5] = row_bulk[_indices[3]].value  # add comment
             plocka_eget.append(row_cue)  # add to plocklista
             total_bulk += row_cue[3]
             antal_bulk += 1
@@ -211,7 +207,11 @@ def is_in_bulk(row_cue):
 def is_in_gff(row_cue):
     global total_gff, antal_gff
     for row_gff in ws_gff:
+<<<<<<< Updated upstream
         if row_cue[0] == row_gff[3].value:
+=======
+        if row_cue[0] == row_gff[3].value:  # if the name matches
+>>>>>>> Stashed changes
             if row_gff[6].value > 0:  # check if in stock
                 if row_gff[12].value is None:  # increase order number
                     row_gff[12].value = 0
@@ -234,6 +234,27 @@ def is_in_gff(row_cue):
             #else:
             #    return False
     return False
+
+#   find_columns loopar igenom den översta raden på bulklagerlistan och letar efter de olika keywordsen.
+#   på så vis kan Pjästanten ändra ordning på kolumnerna utan att man måste ändra i Bolibompa
+#   om rubrikerna i filen ändras måste de dock ändras här också
+def find_columns(_worksheet):
+    art_nr = ""
+    antal = ""
+    pps = ""
+    komm = ""
+    row_0 = _worksheet[1]
+    for i, cell in enumerate(row_0, start=0):
+        if row_0[i].value == "Art.nr.":
+            art_nr = i
+        elif row_0[i].value == "Antal":
+            antal = i
+        elif row_0[i].value == "Pris/st":
+            pps = i
+        elif row_0[i].value == "Kommentar":
+            komm = i
+
+    return [art_nr, antal, pps, komm]
 
 
 def sum_list(lista):
