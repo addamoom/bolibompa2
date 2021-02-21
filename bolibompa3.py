@@ -174,11 +174,7 @@ def search_stock(list_of_cues):
         elif is_in_gff(row_cue):
             continue
         else:
-<<<<<<< Updated upstream
-            row_cue[3] = '0'
-=======
             row_cue[3] = '0'  # no need to have a price if it's not avaliable for purchase
->>>>>>> Stashed changes
             row_cue[4] = '0'
             antal_error += 1
             errors.append(row_cue)
@@ -207,11 +203,8 @@ def is_in_bulk(row_cue, _indices):
 def is_in_gff(row_cue):
     global total_gff, antal_gff
     for row_gff in ws_gff:
-<<<<<<< Updated upstream
-        if row_cue[0] == row_gff[3].value:
-=======
+
         if row_cue[0] == row_gff[3].value:  # if the name matches
->>>>>>> Stashed changes
             if row_gff[6].value > 0:  # check if in stock
                 if row_gff[12].value is None:  # increase order number
                     row_gff[12].value = 0
@@ -332,6 +325,7 @@ def scan_list():
 
 def display_lists(folder, list):
     for row in list:
+        print(row)
         table.insert(folder, "end", text=row[0], values=[row[1], row[2], row[3], row[4], row[5]])
 
 
@@ -422,6 +416,9 @@ def re_init():
 
     main_win.title("Bolibompa3")
 
+    main_win.finale_file = ''
+    main_win.gff_file = ''
+
     total_gff = 0
     total_bulk = 0
 
@@ -437,9 +434,15 @@ def re_init():
 
     table.tag_configure('folder', font='bold')
 
+
+    pyrocues = []
     plocka_eget = []
     plocka_gff = []
     errors = []
+
+    display_lists(folder_bulk, plocka_eget)
+    display_lists(folder_gff, plocka_gff)
+    display_lists(folder_error, errors)
 
     shortcutFile = open('shortcuts.csv', 'r')
 
@@ -454,6 +457,13 @@ def re_init():
 
     ign_1m = 0
     ign_5m = 0
+
+    display_lists(folder_bulk, plocka_eget)
+    display_lists(folder_gff, plocka_gff)
+    display_lists(folder_error, errors)
+
+
+    display_lists()
 
     messagebox.showinfo("Klar!", "Din session är nu rensad. Var god välj nya filer")
 
