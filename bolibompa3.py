@@ -281,7 +281,8 @@ def kbk_pyro():
                 ws_gff.cell(row=currentrow, column=7).value = ws_gff_reset.cell(row=currentrow, column=7).value
                 currentrow += 1
 
-            wb_gff.save(path)
+            if (total_gff != 0):
+              wb_gff.save(path)
             wb_bulk.save('Bulklager.xlsx')
 
             messagebox.showinfo("Färdigt!", "Nu finns det listor. Coolt va?")
