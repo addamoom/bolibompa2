@@ -76,6 +76,7 @@ enter_factor = ''
 
 analyzed = 0
 
+#Ta bort dessa i BBP4
 img_bttn_if = PhotoImage(file="Buttons/button_importera-finale-txt.png")
 img_bttn_ig = PhotoImage(file="Buttons/button_importera-gff-prislista.png")
 img_bttn_lte = PhotoImage(file="Buttons/button_lagg-till-eltandare.png")
@@ -211,8 +212,12 @@ def is_in_gff(row_cue):
                 elif row_gff[12].value >= row_gff[6].value:        #the current number of ordered pieces has to be lower than the stock
                     return False
 
-                row_cue[3] = float(row_gff[9].value)  # set the price
-                row_cue[4] = row_cue[3]  # total price (used later)
+                if(row_gff[9].value == None):
+                    print(row_cue[0] + " saknar pris. kontakta GFF")
+                    return False
+                else:    
+                    row_cue[3] = float(row_gff[9].value)  # set the price
+                    row_cue[4] = row_cue[3]  # total price (used later)
 
                 if row_gff[3].value == "900003E":
                     print(row_gff[6].value)
