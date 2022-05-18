@@ -132,6 +132,7 @@ def import_finale():
 def import_gff():
     global gff_file, wb_gff, ws_gff, wb_gff_reset, ws_gff_reset
     gff_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFF-filen')
+    if len(gff_file) < 1: return # Vakt-clause, om filpathen är 0 lång försök inte ladda någon fil
     wb_gff = openpyxl.load_workbook(gff_file)
     wb_gff_reset = openpyxl.load_workbook(gff_file)
     ws_gff = wb_gff[wb_gff.sheetnames[0]]
@@ -393,15 +394,17 @@ def add_ign():
     igniters = []
 
     # Varning för fulkod. Känsliga programmerare bör blunda
-    if ign_1m > 0:
-        antal_bulk += ign_1m
-        igniters.append(
-            ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m_price] + [round(i1m_price * ign_1m, 2)] + [''])
+    if ign_1m != None: # Vakt, ser till att antalet har ett värde
+        if ign_1m > 0:
+            antal_bulk += ign_1m
+            igniters.append(
+                ['P-IGN-1M'] + ['Eltändare 1m (svart)'] + [ign_1m] + [i1m_price] + [round(i1m_price * ign_1m, 2)] + [''])
 
-    if ign_5m > 0:
-        antal_bulk += ign_5m
-        igniters.append(
-            ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m_price] + [round(i5m_price * ign_5m, 2)] + [''])
+    if ign_5m != None: # Vakt, ser till att antalet har ett värde
+        if ign_5m > 0:
+            antal_bulk += ign_5m
+            igniters.append(
+                ['P-IGN-5M'] + ['Eltändare 5m (Orange)'] + [ign_5m] + [i5m_price] + [round(i5m_price * ign_5m, 2)] + [''])
 
     if igniters:
         total_bulk += ((i1m_price * ign_1m) + (i5m_price * ign_5m))
