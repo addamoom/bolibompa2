@@ -4,19 +4,16 @@ import os
 from decimal import *
 import re
 import tkinter as tk
-from tkinter import *
-from tkinter import filedialog, messagebox, simpledialog, ttk
+from tkinter import filedialog, messagebox, simpledialog, ttk 
 import openpyxl
-from tkinter.ttk import Treeview
-from tkinter.ttk import *
 import ntpath
-from openpyxl import Workbook, styles
+from openpyxl import Workbook
 from openpyxl.styles import *
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 from ttkthemes import ThemedTk
 
 # splashscreenbös
-splashscreen = Tk()
+splashscreen = tk.Tk()
 splashscreen.overrideredirect(True)
 width = splashscreen.winfo_screenwidth()
 height = splashscreen.winfo_screenheight()
@@ -24,9 +21,9 @@ height = splashscreen.winfo_screenheight()
 x_start = (width / 2) - 216
 y_start = (height / 2) - 216
 splashscreen.geometry('%dx%d+%d+%d' % (432, 432, x_start, y_start))
-canvas = Canvas(splashscreen, height=432, width=432, bg="yellow")
+canvas = tk.Canvas(splashscreen, height=432, width=432, bg="yellow")
 canvas.pack()
-image = PhotoImage(file="BombermanSigil.gif")
+image = tk.PhotoImage(file="BombermanSigil.gif")
 
 canvas.create_image(216, 216, image=image)
 
@@ -77,15 +74,15 @@ enter_factor = ''
 analyzed = 0
 
 #Ta bort dessa i BBP4
-img_bttn_if = PhotoImage(file="Buttons/button_importera-finale-txt.png")
-img_bttn_ig = PhotoImage(file="Buttons/button_importera-gff-prislista.png")
-img_bttn_lte = PhotoImage(file="Buttons/button_lagg-till-eltandare.png")
-img_bttn_r = PhotoImage(file="Buttons/button_rensa.png")
-img_bttn_sfl = PhotoImage(file="Buttons/button_skapa-flammlista.png")
-img_bttn_spl = PhotoImage(file="Buttons/button_skapa-plocklista.png")
-img_bttn_vp = PhotoImage(file="Buttons/button_visa-pjaser.png")
+img_bttn_if = tk.PhotoImage(file="Buttons/button_importera-finale-txt.png")
+img_bttn_ig = tk.PhotoImage(file="Buttons/button_importera-gff-prislista.png")
+img_bttn_lte = tk.PhotoImage(file="Buttons/button_lagg-till-eltandare.png")
+img_bttn_r = tk.PhotoImage(file="Buttons/button_rensa.png")
+img_bttn_sfl = tk.PhotoImage(file="Buttons/button_skapa-flammlista.png")
+img_bttn_spl = tk.PhotoImage(file="Buttons/button_skapa-plocklista.png")
+img_bttn_vp = tk.PhotoImage(file="Buttons/button_visa-pjaser.png")
 
-button_style = Style()
+button_style = tk.ttk.Style()
 button_style.configure('TButton', bd=0, background='#626262')
 
 
@@ -366,13 +363,13 @@ def print_list(location):
         if row[0].value == 'Från Bulk' or row[0].value == 'Från GFF':
             for i in range(0, 5):
                 row[i].font = Font(name='Calibri', bold=True)
-                row[i].fill = PatternFill(fill_type=SOLID, fgColor='00F6A54A')
+                row[i].fill = PatternFill(fill_type=tk.SOLID, fgColor='00F6A54A')
         else:
-            row[2].fill = PatternFill(fill_type=SOLID, fgColor='00cfd8dc')
+            row[2].fill = PatternFill(fill_type=tk.Stk.OLID, fgColor='00cfd8dc')
 
     for cell in ws1["1:1"]:
         cell.font = Font(name='Calibri', bold=True)
-        cell.fill = PatternFill(fill_type=SOLID, fgColor='00F57D00')
+        cell.fill = PatternFill(fill_type=tk.SOLID, fgColor='00F57D00')
 
     wb1.save(filename=path)
 
@@ -479,7 +476,7 @@ def init(main_win):
     global img_bttn_if, img_bttn_ig, img_bttn_lte, img_bttn_r, img_bttn_sfl, img_bttn_spl, img_bttn_vp
     info_frame = tk.Frame(main_win, bd=0)
     info_frame.grid(column=0, row=0, sticky="ns")
-    info_frame.pack(fill='both', expand=TRUE)
+    info_frame.pack(fill='both', expand=tk.TRUE)
 
     #  info_scroll = Scrollbar(info_frame)
     #  info_scroll.pack(side=RIGHT)
@@ -488,19 +485,19 @@ def init(main_win):
     table = ttk.Treeview(info_frame, style='Pyrot.Treeview')  # gör denna global
 
     table["columns"] = ("one", "two", "three", "four", "five", "six")
-    table.column("#0", width=150, minwidth=150, stretch=NO)
+    table.column("#0", width=150, minwidth=150, stretch=tk.NO)
     table.column("#1", width=300, minwidth=200)
-    table.column("#2", width=50, minwidth=50, stretch=NO)
-    table.column("#3", width=50, minwidth=50, stretch=NO)
-    table.column("#4", width=75, minwidth=75, stretch=NO)
+    table.column("#2", width=50, minwidth=50, stretch=tk.NO)
+    table.column("#3", width=50, minwidth=50, stretch=tk.NO)
+    table.column("#4", width=75, minwidth=75, stretch=tk.NO)
     table.column("#5", width=500, minwidth=200)
 
-    table.heading("#0", text="Art. NR", anchor=W)
-    table.heading("#1", text="Beskrivning", anchor=W)
-    table.heading("#2", text="Antal", anchor=W)
-    table.heading("#3", text="Pris", anchor=W)
-    table.heading("#4", text="Summa", anchor=W)
-    table.heading("#5", text="Kommentar", anchor=W)
+    table.heading("#0", text="Art. NR", anchor=tk.W)
+    table.heading("#1", text="Beskrivning", anchor=tk.W)
+    table.heading("#2", text="Antal", anchor=tk.W)
+    table.heading("#3", text="Pris", anchor=tk.W)
+    table.heading("#4", text="Summa", anchor=tk.W)
+    table.heading("#5", text="Kommentar", anchor=tk.W)
     # Level 1
     folder_bulk = table.insert("", 1, 'folder_bulk', text="Bulklager", values=['', '', '', total_bulk, ''],
                                tags='folder')
@@ -509,40 +506,40 @@ def init(main_win):
 
     table.tag_configure('folder', font='bold')
 
-    table.pack(side=TOP, fill='y', expand=True)  # , fill=X)
+    table.pack(side=tk.TOP, fill='y', expand=True)  # , fill=X)
 
     button_frame = tk.Frame(main_win, bg='#626262')
 
     bttn_add_ign = tk.Button(button_frame, image=img_bttn_lte, command=add_ign, bd=0, bg='#626262',
                              activebackground='#626262', highlightthickness=0)
-    bttn_add_ign.pack(side=TOP)
+    bttn_add_ign.pack(side=tk.TOP)
 
     bttn_import_finale = tk.Button(button_frame, image=img_bttn_if, command=import_finale, bd=0, bg='#626262',
                                    activebackground='#626262', highlightthickness=0)
-    bttn_import_finale.pack(side=LEFT)
+    bttn_import_finale.pack(side=tk.LEFT)
 
     bttn_import_gff = tk.Button(button_frame, image=img_bttn_ig, command=import_gff, bd=0, bg='#626262',
                                 activebackground='#626262', highlightthickness=0)
-    bttn_import_gff.pack(side=LEFT)
+    bttn_import_gff.pack(side=tk.LEFT)
 
     bttn_search_list = tk.Button(button_frame, image=img_bttn_vp, command=scan_list, bd=0, bg='#626262',
                                  activebackground='#626262', highlightthickness=0)
-    bttn_search_list.pack(side=LEFT)
+    bttn_search_list.pack(side=tk.LEFT)
 
     bttn_transact = tk.Button(button_frame, image=img_bttn_spl, command=kbk_pyro, bd=0, bg='#626262',
                               activebackground='#626262', highlightthickness=0)
-    bttn_transact.pack(side=RIGHT)
+    bttn_transact.pack(side=tk.RIGHT)
 
     bttn_flames = tk.Button(button_frame, image=img_bttn_sfl, command=kbk_flames, bd=0, bg='#626262',
                             activebackground='#626262', highlightthickness=0)
-    bttn_flames.pack(side=RIGHT)
+    bttn_flames.pack(side=tk.RIGHT)
 
     bttn_clear = tk.Button(button_frame, image=img_bttn_r, command=re_init, bd=0, bg='#626262',
                            activebackground='#626262', highlightthickness=0)
-    bttn_clear.pack(side=RIGHT)
+    bttn_clear.pack(side=tk.RIGHT)
 
-    info_frame.pack(side=TOP, fill=Y)
-    button_frame.pack(side=BOTTOM)
+    info_frame.pack(side=tk.TOP, fill=tk.Y)
+    button_frame.pack(side=tk.BOTTOM)
 
 
 init(main_win)
