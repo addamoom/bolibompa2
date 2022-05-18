@@ -132,7 +132,9 @@ def import_finale():
 def import_gff():
     global gff_file, wb_gff, ws_gff, wb_gff_reset, ws_gff_reset
     gff_file = filedialog.askopenfilename(parent=main_win, initialdir=".", title='Välj GFF-filen')
-    if len(gff_file) < 1: return # Vakt-clause, om filpathen är 0 lång försök inte ladda någon fil
+    if len(gff_file) < 1:  # Vakt-clause, om filpathen är 0 lång försök inte ladda någon fil
+        messagebox.showinfo("Ladda GFF-fil", "Ingen GFF-fil laddades")
+        return
     wb_gff = openpyxl.load_workbook(gff_file)
     wb_gff_reset = openpyxl.load_workbook(gff_file)
     ws_gff = wb_gff[wb_gff.sheetnames[0]]
